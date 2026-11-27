@@ -1,0 +1,111 @@
+export const memberIdentity = {
+  user_roles: ['member-teama'],
+  username: 'uuid-carol',
+  attributes: {email: 'carol@example.com'},
+}
+
+export const me = {
+  email: 'carol@example.com',
+  user: 'carol',
+  teams: [{team: 'teama', team_path: '/efs/teama'}],
+  clusters: [{name: 'hpc-poc', region: 'us-west-2'}],
+}
+
+export const memberTarget = {
+  clusterName: 'hpc-poc',
+  region: 'us-west-2',
+  team: 'teama',
+}
+
+export const options = {
+  types: [
+    {
+      instance_type: 'g6e.xlarge',
+      partition: 'g6e-xlarge',
+      gpus: 1,
+      vcpus: 4,
+      memory_gib: 32,
+      price_per_hour: 1.861,
+      gpu_model: 'NVIDIA L40S',
+      gpu_memory_gb: 48,
+      gpu_memory_gib: 44.7,
+      limit: 2,
+      running: 2,
+      remaining: 0,
+      has_quota: true,
+      borrow_allowed: true,
+      status: 'busy' as const,
+    },
+    {
+      instance_type: 'g6e.12xlarge',
+      partition: 'g6e-12xlarge',
+      gpus: 4,
+      vcpus: 48,
+      memory_gib: 384,
+      price_per_hour: 10.493,
+      gpu_model: 'NVIDIA L40S',
+      gpu_memory_gb: 48,
+      gpu_memory_gib: 44.7,
+      limit: 1,
+      running: 0,
+      remaining: 1,
+      has_quota: true,
+      borrow_allowed: true,
+      status: 'startable' as const,
+    },
+    {
+      instance_type: 'p5.48xlarge',
+      partition: 'p5-48xlarge',
+      gpus: 8,
+      vcpus: 192,
+      memory_gib: 2048,
+      price_per_hour: 98.32,
+      gpu_model: 'NVIDIA H100',
+      gpu_memory_gb: 80,
+      gpu_memory_gib: 80,
+      limit: 0,
+      running: 0,
+      remaining: 0,
+      has_quota: false,
+      borrow_allowed: true,
+      status: 'no_capacity' as const,
+    },
+  ],
+  unmanaged_queues: [
+    {
+      queue: 'mixed',
+      reason: 'multi_type' as const,
+      instance_types: ['g6.xlarge', 'g6.2xlarge'],
+    },
+  ],
+  envs: [
+    {
+      scope: 'team' as const,
+      team: 'teama',
+      name: 'cuda',
+      version: '12.4',
+      kind: 'container' as const,
+      description: 'CUDA base',
+      detected: {cuda: '12.4', python: null},
+    },
+    {
+      scope: 'team' as const,
+      team: 'teamb',
+      name: 'alphafold',
+      version: '2.3',
+      kind: 'conda' as const,
+      description: null,
+      detected: {python: '3.11'},
+      visibility: 'all' as const,
+    },
+  ],
+  envs_error: null,
+  limits: {
+    nodes_max: 64,
+    borrow_max_minutes: 240,
+  },
+  team: 'teama',
+  team_root: '/efs/teama',
+  shared_root: '/efs/shared',
+  budget: null,
+}

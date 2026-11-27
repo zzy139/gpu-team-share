@@ -1,0 +1,289 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Side stack of the custom ParallelCluster UI: least-privilege permissions and configuration for the one-click
+  team lifecycle (Simple AD, FSx, S3, DRA, Cognito, Slurm) and the business-user self-service portal.
+  It narrows the PCUI Lambda's SSM Run Command to cluster head nodes and adds a separate role that can only
+  reach cluster login nodes. The upstream parallelcluster-ui template is not modified.
+
+Parameters:
+  PcuiRoleName:
+    Type: String
+    Description: Name of the PCUI Lambda role (logical id ParallelClusterUIUserRole of the PCUI stack).
+    AllowedPattern: '^[\w+=,.@-]{1,64}$'
+  UserPoolId:
+    Type: String
+    Description: Cognito user pool of PCUI.
+    AllowedPattern: '^[\w-]+_[0-9a-zA-Z]+$'
+  ClusterNames:
+    Type: CommaDelimitedList
+    Description: ParallelCluster cluster names that PCUI may run commands on.
+    Default: hpc-poc
+  Project:
+    Type: String
+    Description: Project tag value; also the prefix of team buckets and user password secrets.
+    Default: hpc-poc
+    AllowedPattern: '^[a-z][a-z0-9-]{0,31}$'
+  CostCenter:
+    Type: String
+    Description: CostCenter tag value of the team buckets.
+    Default: hpc-poc
+    AllowedPattern: '^[A-Za-z0-9 _.:/=+@-]{1,128}$'
+  DirectoryId:
+    Type: String
+    Description: Simple AD directory id.
+    AllowedPattern: '^d-[0-9a-f]{10}$'
+  AdDomainName:
+    Type: String
+    Description: AD DNS domain name (lowercase).
+    AllowedPattern: '^[a-z0-9-]+(\.[a-z0-9-]+)+$'
+  AdDomainControllers:
+    Type: CommaDelimitedList
+    Description: Domain controller IP addresses or host names reachable from the head node.
+  AdAdminUser:
+    Type: String
+    Default: Administrator
+    AllowedPattern: '^[A-Za-z][A-Za-z0-9._-]{0,63}$'
+  AdAdminSecretArn:
+    Type: String
+    Description: Full ARN of the Secrets Manager secret with the AD administrator password (read by the head node only).
+    AllowedPattern: '^arn:aws[a-z-]*:secretsmanager:[a-z0-9-]+:\d{12}:secret:[A-Za-z0-9/_+=.@-]+$'
+  FsxFileSystemId:
+    Type: String
+    AllowedPattern: '^fs-[0-9a-f]{8,17}$'
+  FsxMountDir:
+    Type: String
+    Default: /fsx
+    AllowedPattern: '^/[A-Za-z0-9_-]+(/[A-Za-z0-9_-]+)*$'
+  TeamRecordPrefix:
+    Type: String
+    Description: SSM Parameter Store prefix of the lifecycle configuration and team records.
+    Default: /pcui-teams
+    AllowedPattern: '^/[A-Za-z0-9_-]+$'
+  EmailDomains:
+    Type: CommaDelimitedList
+    Description: Allowed customer email domains (lowercase). PCUI login = email, cluster user = the part before '@'.
+    Default: example.com
+
+Resources:
+  # Admin path: the PCUI Lambda may send commands only to head nodes of the listed clusters.
+  # Explicit Deny, so it holds even if the upstream SsmPolicy is broadened. A missing tag counts as "not equal".
+  PcuiSsmScopePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Limit SSM Run Command of the PCUI Lambda to ParallelCluster head nodes of the listed clusters.
+      Roles: [!Ref PcuiRoleName]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenySendCommandOutsideListedClusters
+            Effect: Deny
+            Action: ssm:SendCommand
+            Resource: !Sub arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:instance/*
+            Condition:
+              StringNotEquals:
+                ssm:resourceTag/parallelcluster:cluster-name: !Ref ClusterNames
+          - Sid: DenySendCommandToNonHeadNodes
+            Effect: Deny
+            Action: ssm:SendCommand
+            Resource: !Sub arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:instance/*
+            Condition:
+              StringNotEquals:
+                ssm:resourceTag/parallelcluster:node-type: HeadNode
+          - Sid: DenySendCommandToManagedInstances
+            Effect: Deny
+            Action: ssm:SendCommand
+            Resource: !Sub arn:${AWS::Partition}:ssm:*:${AWS::AccountId}:managed-instance/*
+
+  # Member path: assumed by the PCUI Lambda only inside member routes; reaches login nodes only.
+  PcuiMemberExecRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Run member portal commands on ParallelCluster login nodes (as the member, via sudo -u).
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${PcuiRoleName}
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LoginNodeRunCommand
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: SendCommandToLoginNodes
+                Effect: Allow
+                Action: ssm:SendCommand
+                Resource: !Sub arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*
+                Condition:
+                  StringEquals:
+                    ssm:resourceTag/parallelcluster:node-type: LoginNode
+                    ssm:resourceTag/parallelcluster:cluster-name: !Ref ClusterNames
+              - Sid: RunShellScriptDocument
+                Effect: Allow
+                Action: ssm:SendCommand
+                Resource: !Sub arn:${AWS::Partition}:ssm:${AWS::Region}::document/AWS-RunShellScript
+              - Sid: DenySendCommandToNonLoginNodes
+                Effect: Deny
+                Action: ssm:SendCommand
+                Resource: !Sub arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:instance/*
+                Condition:
+                  StringNotEquals:
+                    ssm:resourceTag/parallelcluster:node-type: LoginNode
+              # GetCommandInvocation and DescribeInstances do not support resource-level permissions.
+              - Sid: ReadCommandResultsAndFindLoginNodes
+                Effect: Allow
+                Action:
+                  - ssm:GetCommandInvocation
+                  - ec2:DescribeInstances
+                Resource: '*'
+      Tags:
+        - Key: Component
+          Value: pcui-teams
+
+  PcuiTeamLifecyclePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Team lifecycle permissions of the PCUI Lambda, scoped to one directory, file system, bucket prefix, secret prefix and user pool.
+      Roles: [!Ref PcuiRoleName]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ResetInitialAdPassword
+            Effect: Allow
+            Action: ds:ResetUserPassword
+            Resource: !Sub arn:${AWS::Partition}:ds:${AWS::Region}:${AWS::AccountId}:directory/${DirectoryId}
+          - Sid: CreateUserPasswordSecrets
+            Effect: Allow
+            Action:
+              - secretsmanager:CreateSecret
+              - secretsmanager:TagResource
+            Resource: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${Project}/user-*
+            Condition:
+              StringEquals:
+                aws:RequestTag/Project: !Ref Project
+          - Sid: UpdateUserPasswordSecrets
+            Effect: Allow
+            Action:
+              - secretsmanager:PutSecretValue
+              - secretsmanager:DescribeSecret
+            Resource: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${Project}/user-*
+          - Sid: TeamBuckets
+            Effect: Allow
+            Action:
+              - s3:CreateBucket
+              - s3:PutBucketPublicAccessBlock
+              - s3:PutEncryptionConfiguration
+              - s3:PutBucketOwnershipControls
+              - s3:PutBucketTagging
+              - s3:Get*
+              - s3:List*
+              - s3:PutObject
+            Resource:
+              - !Sub arn:${AWS::Partition}:s3:::${Project}-*-${AWS::AccountId}-${AWS::Region}
+              - !Sub arn:${AWS::Partition}:s3:::${Project}-*-${AWS::AccountId}-${AWS::Region}/*
+          - Sid: CreateTeamDataRepositoryAssociation
+            Effect: Allow
+            Action:
+              - fsx:CreateDataRepositoryAssociation
+              - fsx:TagResource
+            Resource:
+              - !Sub arn:${AWS::Partition}:fsx:${AWS::Region}:${AWS::AccountId}:file-system/${FsxFileSystemId}
+              - !Sub arn:${AWS::Partition}:fsx:${AWS::Region}:${AWS::AccountId}:association/${FsxFileSystemId}/*
+          - Sid: DescribeDataRepositoryAssociations
+            Effect: Allow
+            Action: fsx:DescribeDataRepositoryAssociations
+            Resource: '*'
+          - Sid: FsxS3ServiceLinkedRolePolicy
+            Effect: Allow
+            Action:
+              - iam:PutRolePolicy
+              - iam:AttachRolePolicy
+            Resource: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/aws-service-role/s3.data-source.lustre.fsx.amazonaws.com/AWSServiceRoleForFSxS3Access_${FsxFileSystemId}
+          - Sid: FsxS3ServiceLinkedRole
+            Effect: Allow
+            Action: iam:CreateServiceLinkedRole
+            Resource: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/aws-service-role/s3.data-source.lustre.fsx.amazonaws.com/*
+            Condition:
+              StringEquals:
+                iam:AWSServiceName: s3.data-source.lustre.fsx.amazonaws.com
+          - Sid: CognitoTeamGroupsAndUsers
+            Effect: Allow
+            Action:
+              - cognito-idp:CreateGroup
+              - cognito-idp:GetGroup
+              - cognito-idp:DeleteGroup
+              - cognito-idp:ListUsersInGroup
+              - cognito-idp:AdminGetUser
+              - cognito-idp:AdminCreateUser
+              - cognito-idp:AdminAddUserToGroup
+              - cognito-idp:AdminRemoveUserFromGroup
+            Resource: !Sub arn:${AWS::Partition}:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${UserPoolId}
+          - Sid: ReadLifecycleConfig
+            Effect: Allow
+            Action: ssm:GetParameter
+            Resource: !Sub arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${TeamRecordPrefix}/config
+          - Sid: TeamRecords
+            Effect: Allow
+            Action:
+              - ssm:GetParameter
+              - ssm:PutParameter
+              - ssm:GetParametersByPath
+            Resource:
+              - !Sub arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${TeamRecordPrefix}/teams
+              - !Sub arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${TeamRecordPrefix}/teams/*
+          - Sid: AssumeMemberExecRole
+            Effect: Allow
+            Action: sts:AssumeRole
+            Resource: !GetAtt PcuiMemberExecRole.Arn
+
+  # Attached to the cluster head node through HeadNode.Iam.AdditionalIamPolicies (pcluster update).
+  # The head node reads the AD admin password itself; it never travels through SSM or PCUI.
+  HeadNodeAdAdminPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Let the cluster head node read the AD administrator secret for adcli.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ReadAdAdminSecret
+            Effect: Allow
+            Action: secretsmanager:GetSecretValue
+            Resource: !Ref AdAdminSecretArn
+
+  TeamLifecycleConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub ${TeamRecordPrefix}/config
+      Type: String
+      Tier: Standard
+      Description: PCUI team lifecycle configuration (no secret values).
+      Tags:
+        Component: pcui-teams
+      Value: !Sub
+        - >-
+          {"version":1,"region":"${AWS::Region}","account_id":"${AWS::AccountId}","project":"${Project}",
+          "clusters":["${Clusters}"],"directory_id":"${DirectoryId}","ad_domain":"${AdDomainName}",
+          "ad_domain_controllers":["${Controllers}"],"ad_admin_user":"${AdAdminUser}",
+          "ad_admin_secret_arn":"${AdAdminSecretArn}","fsx_id":"${FsxFileSystemId}","fsx_mount":"${FsxMountDir}",
+          "bucket_prefix":"${Project}","secret_prefix":"${Project}/user-","record_prefix":"${TeamRecordPrefix}",
+          "tags":{"Project":"${Project}","CostCenter":"${CostCenter}"},"email_domains":["${Domains}"],
+          "member_exec_role_arn":"${MemberRoleArn}"}
+        - Clusters: !Join ['","', !Ref ClusterNames]
+          Controllers: !Join ['","', !Ref AdDomainControllers]
+          Domains: !Join ['","', !Ref EmailDomains]
+          MemberRoleArn: !GetAtt PcuiMemberExecRole.Arn
+
+Outputs:
+  PcuiSsmScopePolicyArn:
+    Value: !Ref PcuiSsmScopePolicy
+  PcuiTeamLifecyclePolicyArn:
+    Value: !Ref PcuiTeamLifecyclePolicy
+  MemberExecRoleArn:
+    Value: !GetAtt PcuiMemberExecRole.Arn
+  HeadNodeAdAdminPolicyArn:
+    Description: Add under HeadNode.Iam.AdditionalIamPolicies of the cluster configuration.
+    Value: !Ref HeadNodeAdAdminPolicy
+  ConfigParameterName:
+    Value: !Ref TeamLifecycleConfig

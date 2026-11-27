@@ -1,0 +1,5 @@
+project:
+  name: ParallelCluster UI (PCUI)
+  tz: Europe/Rome
+  adrFolder: ./decisions
+  packages: []

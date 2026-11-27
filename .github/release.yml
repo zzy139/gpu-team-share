@@ -1,0 +1,34 @@
+
+changelog:
+  exclude:
+    labels:
+      - DON'T MERGE
+      - duplicate
+      - invalid
+      - question
+      - wontfix
+
+  categories:
+    - title: Features
+      labels:
+        - release:feature
+
+    - title: Changes
+      labels:
+        - release:improvement
+
+    - title: Bugfixes
+      labels:
+        - release:bugfix
+
+    - title: Deprecated
+      labels:
+        - release:deprecated
+        
+    - title: Breaking Changes
+      labels:
+        - release:breaking-change
+
+    - title: Known issues
+      labels:
+        - bug

@@ -1,0 +1,20 @@
+__pycache__
+frontend/node_modules
+frontend/.next
+frontend/.swc
+frontend/build
+infrastructure/cognitolambda/node_modules
+.DS_Store
+.hugo_build.lock
+public/*
+/frontend/tsconfig.tsbuildinfo
+.idea/
+.ignore
+infrastructure/environments/*
+!infrastructure/environments/demo-*
+
+# local secrets
+*.env
+.env*
+.secrets/
+*.pem

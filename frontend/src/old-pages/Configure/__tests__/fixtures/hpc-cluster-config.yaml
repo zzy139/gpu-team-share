@@ -1,0 +1,394 @@
+Region: <区域>
+Image:
+  Os: alinux2023
+Tags:
+  - Key: Project
+    Value: hpc-poc
+HeadNode:
+  InstanceType: g6.xlarge
+  Networking:
+    SubnetId: <PublicSubnet1>
+    ElasticIp: true
+    AdditionalSecurityGroups:
+      - <SshAccessSecurityGroup>
+  Ssh:
+    AllowedIps: 10.50.0.0/16
+  LocalStorage:
+    RootVolume:
+      Size: 100
+      Encrypted: true
+  Iam:
+    AdditionalIamPolicies:
+      - Policy: arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      - Policy: <HeadNodePolicy>
+    S3Access:
+      - BucketName: <工件桶>
+        KeyName: <前缀>/scripts/*
+        EnableWriteAccess: false
+  CustomActions:
+    OnNodeStart:
+      Script: s3://<工件桶>/<前缀>/scripts/headnode-start.sh
+      Args:
+        - <区域>
+        - s3://<工件桶>/<前缀>/scripts
+        - hpc.corp.internal
+        - <DC1-IP>
+        - <AdAdminSecretArn>
+        - <AD只读用户密钥ARN>
+        - <DirectoryId>
+    OnNodeConfigured:
+      Script: s3://<工件桶>/<前缀>/scripts/headnode-setup.sh
+      Args:
+        - <区域>
+        - s3://<工件桶>/<前缀>/scripts
+    OnNodeUpdated:
+      Script: s3://<工件桶>/<前缀>/scripts/headnode-setup.sh
+      Args:
+        - <区域>
+        - s3://<工件桶>/<前缀>/scripts
+LoginNodes:
+  Pools:
+    - Name: login
+      Count: 1
+      InstanceType: m7i.large
+      Networking:
+        SubnetIds:
+          - <PublicSubnet1>
+        AdditionalSecurityGroups:
+          - <SshAccessSecurityGroup>
+      Ssh:
+        AllowedIps: 10.50.0.0/16
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+          - Policy: <NodeScriptsPolicy>
+DirectoryService:
+  DomainName: dc=hpc,dc=corp,dc=internal
+  DomainAddr: ldap://<DC1-IP>,ldap://<DC2-IP>
+  PasswordSecretArn: <AD只读用户密钥ARN>
+  DomainReadOnlyUser: cn=ReadOnlyUser,cn=Users,dc=hpc,dc=corp,dc=internal
+  LdapTlsReqCert: never
+  AdditionalSssdConfigs:
+    ldap_auth_disable_tls_never_use_in_production: true
+Scheduling:
+  Scheduler: slurm
+  SlurmSettings:
+    ScaledownIdletime: 10
+    QueueUpdateStrategy: DRAIN
+    EnableMemoryBasedScheduling: true
+    Database:
+      Uri: <数据库地址>:3306
+      UserName: slurmadmin
+      PasswordSecretArn: <数据库密钥ARN>
+    CustomSlurmSettings:
+      - AccountingStorageTRES: gres/gpu
+      - PriorityType: priority/multifactor
+      - PriorityWeightQOS: 100000
+      - PriorityWeightFairshare: 10000
+      - PriorityWeightAge: 1000
+      - PriorityWeightJobSize: 0
+      - PriorityMaxAge: 7-0
+      - PriorityDecayHalfLife: 7-0
+      - AccountingStorageEnforce: associations,limits,qos,safe
+      - PrivateData: jobs,usage,accounts,users
+      - JobSubmitPlugins: lua
+  SlurmQueues:
+    - Name: g6e-xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-xlarge
+          Instances:
+            - InstanceType: g6e.xlarge
+          MinCount: 0
+          MaxCount: '8'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-2xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-2xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-2xlarge
+          Instances:
+            - InstanceType: g6e.2xlarge
+          MinCount: 0
+          MaxCount: '8'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-4xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-4xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-4xlarge
+          Instances:
+            - InstanceType: g6e.4xlarge
+          MinCount: 0
+          MaxCount: '4'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-8xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-8xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-8xlarge
+          Instances:
+            - InstanceType: g6e.8xlarge
+          MinCount: 0
+          MaxCount: '4'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-12xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-12xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-12xlarge
+          Instances:
+            - InstanceType: g6e.12xlarge
+          MinCount: 0
+          MaxCount: '2'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-16xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-16xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-16xlarge
+          Instances:
+            - InstanceType: g6e.16xlarge
+          MinCount: 0
+          MaxCount: '2'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-24xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-24xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-24xlarge
+          Instances:
+            - InstanceType: g6e.24xlarge
+          MinCount: 0
+          MaxCount: '2'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: g6e-48xlarge
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: true
+      CustomSlurmSettings:
+        TRESBillingWeights: CPU=0,Mem=0,GRES/gpu=1
+      Tags:
+        - Key: Queue
+          Value: g6e-48xlarge
+        - Key: GpuType
+          Value: L40S
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: g6e-48xlarge
+          Instances:
+            - InstanceType: g6e.48xlarge
+          MinCount: 0
+          MaxCount: '1'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+    - Name: build
+      CapacityType: ONDEMAND
+      JobExclusiveAllocation: false
+      Tags:
+        - Key: Queue
+          Value: build
+      ComputeSettings:
+        LocalStorage:
+          RootVolume:
+            Size: 200
+            Encrypted: true
+      Networking:
+        SubnetIds:
+          - <私有子网1>
+          - <私有子网2>
+          - <私有子网3>
+          - <私有子网4>
+      ComputeResources:
+        - Name: build
+          Instances:
+            - InstanceType: m7i.xlarge
+          MinCount: 0
+          MaxCount: '2'
+          DynamicNodePriority: 1
+      CustomActions:
+        OnNodeStart:
+          Script: s3://<工件桶>/<前缀>/scripts/node-enroot.sh
+      Iam:
+        S3Access:
+          - BucketName: <工件桶>
+            KeyName: <前缀>/scripts/*
+            EnableWriteAccess: false
+SharedStorage:
+  - MountDir: /efs
+    Name: efs
+    StorageType: Efs
+    EfsSettings:
+      FileSystemId: <EFS文件系统ID>
+Monitoring:
+  DetailedMonitoring: false
+  Logs:
+    CloudWatch:
+      Enabled: true
+      RetentionInDays: 14
+      DeletionPolicy: Retain
+  Dashboards:
+    CloudWatch:
+      Enabled: true

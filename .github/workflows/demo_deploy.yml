@@ -1,0 +1,100 @@
+name: Deploy to Demo
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency: ci-${{ github.ref }}
+
+jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        name: Setup Node version
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./frontend
+
+      - name: Run type checks
+        run: npm run ts-validate
+        working-directory: ./frontend
+
+      - name: Run frontend tests
+        run: npm test
+        working-directory: ./frontend
+
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install python dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Run backend tests
+        run: pytest
+
+  update-infrastructure:
+    runs-on: ubuntu-latest
+    
+    needs: [frontend-tests, backend-tests]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.ACTION_DEMO_DEPLOY_JOB_UPDATE_INFRASTRUCTURE_ROLE }}
+      
+      - name: Update staging infrastructure
+        run: ./infrastructure/update-environment-infra.sh demo
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    needs: [update-infrastructure]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.ACTION_DEMO_DEPLOY_JOB_BUILD_AND_DEPLOY_ROLE }}
+      
+      - name: Update staging environment
+        run: ./scripts/build_and_update_lambda.sh --stack-name "parallelcluster-ui-demo" --region eu-west-1
+
+

@@ -1,0 +1,77 @@
+from typing import Union
+
+from flask import Request, Response
+
+
+def log_request_body_and_headers(_logger, request: Request):
+    details = __get_http_info(request)
+    details['path'] = request.path
+    if request.args:
+        details['params'] = request.args
+
+    if 'serverless.event' in request.environ:
+        env = request.environ.get('serverless.event')
+        if 'requestContext' in env and 'requestId' in env.get('requestContext'):
+            details['apigw-request-id'] = env.get('requestContext').get('requestId')
+
+    _logger.info(details)
+
+
+def log_response_body_and_headers(_logger, response: Response):
+    details = __get_http_info(response)
+    _logger.info(details)
+
+
+def __get_http_info(r: Union[Request,Response]) -> dict:
+    headers = __filter_headers(r.headers)
+    details = {'headers': headers}
+
+    try:
+        body = r.json
+        if body:
+            details['body'] = __redact_body(body)
+    except:
+        pass
+
+    return details
+
+
+# Body fields that carry user content (pasted job scripts, member file contents) or credentials.
+SENSITIVE_BODY_KEYS = {'script_content', 'content_b64'}
+SENSITIVE_BODY_KEY_PARTS = ('password', 'secret', 'token')
+REDACTED = '<redacted>'
+
+
+def __redact_body(value):
+    """ utility function to replace user content and credentials in a JSON body before it is logged """
+    if isinstance(value, dict):
+        redacted = {}
+        for key, item in value.items():
+            lower = str(key).lower()
+            if lower in SENSITIVE_BODY_KEYS or any(part in lower for part in SENSITIVE_BODY_KEY_PARTS):
+                redacted[key] = REDACTED
+            else:
+                redacted[key] = __redact_body(item)
+        return redacted
+    if isinstance(value, list):
+        return [__redact_body(item) for item in value]
+    return value
+
+
+SENSITIVE_HEADERS = [
+    'Cookie',
+    'Set-Cookie',
+    'X-CSRF-Token',
+    'Authorization',
+]
+
+
+def __filter_headers(headers: dict):
+    """ utility function to remove sensitive information from request/response headers """
+    _headers = dict(headers)
+    _lower_to_key = {k.lower(): k for k in _headers}
+    for header in SENSITIVE_HEADERS:
+        key = _lower_to_key.get(header.lower())
+        if key:
+            _headers.pop(key)
+    return _headers

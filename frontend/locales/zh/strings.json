@@ -1,0 +1,2317 @@
+{
+  "global": {
+    "projectDisplayName": "AWS ParallelCluster",
+    "projectName": "AWS ParallelCluster UI",
+    "menu": {
+      "header": "$t(global.projectDisplayName)",
+      "clusters": "集群",
+      "images": "镜像",
+      "users": "管理员账号",
+      "teams": "团队管理",
+      "teamUsage": "费用总览",
+      "myJobs": "我的作业",
+      "submitJob": "提交作业",
+      "myTeam": "我的团队",
+      "viewLicense": "查看许可证",
+      "audit": "审计日志",
+      "envs": "环境",
+      "templates": "作业模板",
+      "capacity": "机型与节点",
+      "clusterSection": "集群"
+    },
+    "topBar": {
+      "signOut": "退出登录",
+      "logoAltText": "$t(global.projectDisplayName} 徽标",
+      "regionSelector": {
+        "defaultRegionText": "区域",
+        "ariaLabel": "区域"
+      },
+      "overflowMenuTitleText": "全部",
+      "overflowMenuTriggerText": "更多"
+    },
+    "help": {
+      "configurationProperties": {
+        "title": "配置属性",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cluster-configuration-file-v3.html?icmpid=docs_parallelcluster_hp_clusters_v1"
+      },
+      "ec2ConnectLink": {
+        "title": "EC2 Instance Connect",
+        "href": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-set-up.html?icmpid=docs_parallelcluster_hp_clusters_v1"
+      }
+    },
+    "openNewTab": "在新标签页中打开",
+    "splitPanel": {
+      "preferencesTitle": "拆分面板首选项",
+      "preferencesPositionLabel": "拆分面板位置",
+      "preferencesPositionDescription": "选择拆分面板的默认位置。",
+      "preferencesPositionSide": "侧边",
+      "preferencesPositionBottom": "底部",
+      "preferencesConfirm": "确认",
+      "preferencesCancel": "取消",
+      "closeButtonAriaLabel": "关闭面板",
+      "openButtonAriaLabel": "打开面板",
+      "resizeHandleAriaLabel": "调整拆分面板大小"
+    },
+    "propertyFilter": {
+      "filteringAriaLabel": "您的选择",
+      "dismissAriaLabel": "关闭",
+      "groupValuesText": "值",
+      "groupPropertiesText": "属性",
+      "operatorsText": "运算符",
+      "operationAndText": "且",
+      "operationOrText": "或",
+      "operatorLessText": "小于",
+      "operatorLessOrEqualText": "小于或等于",
+      "operatorGreaterText": "大于",
+      "operatorGreaterOrEqualText": "大于或等于",
+      "operatorContainsText": "包含",
+      "operatorDoesNotContainText": "不包含",
+      "operatorEqualsText": "等于",
+      "operatorDoesNotEqualText": "不等于",
+      "editTokenHeader": "编辑筛选条件",
+      "propertyText": "属性",
+      "operatorText": "运算符",
+      "valueText": "值",
+      "cancelActionText": "取消",
+      "applyActionText": "应用",
+      "allPropertiesLabel": "所有属性",
+      "clearFiltersText": "清除筛选条件",
+      "removeTokenButtonAriaLabel": "移除筛选条件 {{propertyKey}} {{operator}} {{value}}",
+      "enteredTextLabel": "使用：“{{text}}”"
+    },
+    "loading": "正在加载...",
+    "intlCurrency": "{{value, currency(USD)}}"
+  },
+  "errorBoundary": {
+    "modal": {
+      "closeAriaLabel": "关闭",
+      "header": "出现错误",
+      "description": "应用遇到未知错误，当前状态不一致。如果您认为这是我们的问题，请在 <1>GitHub issues 页面</1>提交错误报告，帮助我们改进。关闭此对话框可返回首页。",
+      "button": "返回首页"
+    }
+  },
+  "noMatch": {
+    "imageAlt": "未找到页面",
+    "title": "未找到页面",
+    "description": "您可能输错了地址，或使用了过期的链接。请检查链接后重试。",
+    "links": "可以使用以下链接：",
+    "home": "首页"
+  },
+  "helpPanel": {
+    "footer": {
+      "learnMore": "了解更多"
+    },
+    "default": {
+      "title": "$t(global.projectName)",
+      "description": "使用 $t(global.projectName) 在 AWS 中创建 HPC 集群。本界面通过 AWS ParallelCluster API 创建、编辑和删除集群，查看日志，并构建 Amazon 系统映像（AMI）。"
+    }
+  },
+  "infoLink": {
+    "label": "信息",
+    "ariaLabel": "信息"
+  },
+  "cluster": {
+    "editAlert": "此集群由不兼容的 AWS ParallelCluster 版本创建，无法编辑。",
+    "tabs": {
+      "details": "详细信息",
+      "instances": "实例",
+      "storage": "存储",
+      "scheduling": "作业状态",
+      "accounting": "作业记账",
+      "stackEvents": "堆栈事件",
+      "costMonitoring": "成本监控"
+    },
+    "properties": {
+      "title": "属性",
+      "sshcommand": {
+        "label": "SSH 命令",
+        "success": "已复制 SSH 命令",
+        "help": "复制 SSH 命令。",
+        "tooltiptext": "复制通过 SSH 登录头节点的命令。如果创建头节点时使用的密钥对不是默认密钥对，必须指定密钥对的路径。详见 <0>使用 SSH 客户端连接 Linux 实例</0>。"
+      },
+      "configurationLabel": "集群配置",
+      "configurationLink": "查看 YAML",
+      "statusLabel": "集群状态",
+      "computeFleetStatusLabel": "计算队列状态",
+      "creationTimeLabel": "创建时间",
+      "lastUpdatedTimeLabel": "最近更新时间",
+      "regionLabel": "区域",
+      "versionLabel": "版本",
+      "ec2InstanceConnect": {
+        "label": "EC2 Instance Connect",
+        "help": "在本地安装 mSSH 辅助工具，并复制提供的命令，通过 EC2 Instance Connect 连接头节点。",
+        "copySuccess": "已复制 mSSH 命令",
+        "copyAria": "复制 mSSH 命令。"
+      },
+      "configDialog": {
+        "title": "集群配置",
+        "download": "下载",
+        "close": "关闭"
+      }
+    },
+    "instances": {
+      "title": "实例",
+      "id": "ID",
+      "instance": "实例",
+      "launchedTime": "启动时间",
+      "type": "类型",
+      "privateIp": "私有 IP",
+      "publicIp": "公有 IP",
+      "state": "状态",
+      "actionsLabel": "操作",
+      "actions": {
+        "stop": "停止",
+        "start": "启动"
+      },
+      "loadingText": "正在加载实例...",
+      "filtering": {
+        "filteringPlaceholder": "查找实例",
+        "filteringAriaLabel": "查找实例",
+        "empty": {
+          "title": "没有实例",
+          "subtitle": "未找到实例"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的实例。"
+        },
+        "clearFilter": "清除筛选条件"
+      }
+    },
+    "storage": {
+      "tableTitle": "文件系统",
+      "id": "ID",
+      "mountPath": "挂载路径",
+      "name": "名称",
+      "type": "类型",
+      "noFilesystems": "没有可显示的文件系统",
+      "noFilesystemsFound": "未找到文件系统。",
+      "noFilesystemsToDisplay": "编辑集群以添加文件系统。",
+      "filter": {
+        "loading": "正在加载文件系统...",
+        "filteringPlaceholder": "查找文件系统",
+        "filteringAriaLabel": "查找文件系统",
+        "noMatches": "没有匹配项",
+        "noFilesystems": "没有符合筛选条件的文件系统。",
+        "clear": "清除筛选条件"
+      }
+    },
+    "stackEvents": {
+      "title": "事件",
+      "filter": {
+        "filteringPlaceholder": "查找堆栈事件",
+        "filteringAriaLabel": "查找堆栈事件"
+      },
+      "actions": {
+        "refresh": "刷新",
+        "view": "在 CloudFormation 中查看"
+      }
+    },
+    "accounting": {
+      "id": "ID",
+      "name": "名称",
+      "queue": "队列",
+      "user": "用户",
+      "state": "状态",
+      "loadingJobs": "正在加载作业...",
+      "filterJobs": "筛选作业",
+      "costEstimate": {
+        "title": "费用估算",
+        "help": "费用估算基于作业运行时长、节点数量和节点单价估算，可能不准确，仅供整体参考。"
+      },
+      "filter": {
+        "empty": {
+          "title": "没有可显示的作业",
+          "subtitle": "在集群头节点上提交作业并查看其状态。"
+        }
+      }
+    },
+    "scheduling": {
+      "tableTitle": "作业",
+      "id": "ID",
+      "name": "名称",
+      "partition": "分区",
+      "runTime": "运行时长",
+      "nodes": "节点",
+      "actions": "操作",
+      "queue": "队列",
+      "state": "状态",
+      "schedulingEnabled": "只有 3.1.x 及以上版本的集群支持作业调度视图。",
+      "ssmEnabled": "必须启用 SSM 才能查看作业。",
+      "filter": {
+        "filteringAriaLabel": "查找作业",
+        "filteringPlaceholder": "查找作业",
+        "empty": {
+          "title": "没有可显示的作业",
+          "subtitle": "在集群头节点上提交作业并查看其状态。"
+        }
+      },
+      "loadingJobs": "正在加载作业...",
+      "propertyNotAvailable": "不适用"
+    },
+    "logs": {
+      "label": "从左侧选择一个日志流。"
+    },
+    "help": {
+      "main": "<p>创建新集群，或选择列表中的集群查看详细信息。</p><p>选择<strong>创建集群</strong>来创建并配置集群。选择<strong>逐步创建</strong>只通过向导创建集群；选择<strong>使用模板</strong>可先用模板填充向导；选择<strong>使用现有集群</strong>可先用现有集群填充向导。</p><p>选择<strong>操作</strong>、<strong>编辑集群</strong>可更新集群配置。部分配置更新需要先停止计算队列，部分更新无法执行。</p><p>可以通过<strong>停止计算队列</strong> | <strong>启动计算队列</strong>停止或启动集群的计算队列。选择<strong>操作</strong>可<strong>删除集群</strong>。</p><p>只能用创建 AWS ParallelCluster UI 时所用的同一 AWS ParallelCluster 版本<strong>创建</strong>和<strong>编辑</strong>集群。</p><p>根据集群配置，可以通过 AWS Systems Manager Shell 会话或 DCV 虚拟桌面访问所选集群的头节点。在<strong>操作</strong>中选择<strong>查看文件系统</strong>可在 AWS 管理控制台中查看集群文件系统，选择<strong>查看日志</strong>可查看 AWS ParallelCluster 日志。</p><p>在搜索框中输入文字，可按名称、状态或版本查找集群。选择列表中的集群可查看其详细信息。</p><0></0>",
+      "details": "<strong>详细信息</strong>显示集群属性摘要。要连接头节点实例，请使用 <strong>EC2 Instance Connect</strong> 辅助工具提供的链接。",
+      "instances": "<strong>实例</strong>显示集群的 EC2 实例列表。",
+      "storage": "<strong>存储</strong>显示已配置的文件系统列表。",
+      "scheduling": "<strong>作业调度</strong>显示正在运行的作业。",
+      "accounting": "<strong>作业记账</strong>显示已配置的 Slurm 记账数据。",
+      "events": "<strong>堆栈事件</strong>显示集群 CloudFormation 堆栈的创建、更新和删除事件记录。",
+      "dcvLink": {
+        "title": "NICE DCV",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/dcv-v3.html?icmpid=docs_parallelcluster_hp_clusters_v1"
+      },
+      "accountingLink": {
+        "title": "AWS ParallelCluster 中的 Slurm 记账",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/slurm-accounting-v3.html?icmpid=docs_parallelcluster_hp_headnode_accounting_v1"
+      },
+      "logsLink": {
+        "title": "AWS ParallelCluster 日志",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cloudwatch-logs-v3.html?icmpid=docs_parallelcluster_hp_clusters_v1"
+      }
+    },
+    "list": {
+      "header": {
+        "title": "集群",
+        "description": "您的集群列表。"
+      },
+      "dialogs": {
+        "delete": {
+          "title": "删除集群",
+          "body": "确定要删除集群 {{clusterName}} 吗？"
+        },
+        "stop": {
+          "title": "停止计算队列",
+          "body": "确定要停止集群 {{clusterName}} 的计算队列吗？这会结束所有正在运行的作业，并终止所有正在运行的计算节点。"
+        }
+      },
+      "actions": {
+        "cancel": "取消",
+        "create": "创建集群",
+        "edit": "编辑集群",
+        "createFromWizard": "逐步创建",
+        "createFromTemplate": "使用模板",
+        "createFromCluster": "使用现有集群",
+        "start": "启动计算队列",
+        "stop": "停止计算队列",
+        "delete": "删除集群",
+        "shell": "Shell 会话",
+        "filesystem": "查看文件系统",
+        "dcv": "DCV 桌面",
+        "logs": "查看日志"
+      },
+      "actionsLabel": "操作",
+      "filtering": {
+        "empty": {
+          "title": "没有可显示的集群",
+          "subtitle": "点击“创建集群”来创建集群。",
+          "action": "创建集群"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的集群",
+          "action": "创建筛选条件"
+        }
+      },
+      "cols": {
+        "name": "名称",
+        "status": "状态",
+        "version": "版本"
+      },
+      "loadingText": "正在加载集群...",
+      "countText": "结果：",
+      "filteringAriaLabel": "筛选集群",
+      "filteringPlaceholder": "查找集群",
+      "splitPanel": {
+        "noClusterSelectedText": "未选择集群",
+        "selectClusterText": "选择一个集群以查看详细信息"
+      }
+    },
+    "codeEditor": {
+      "line": "行",
+      "column": "列",
+      "loading": "正在加载代码编辑器",
+      "loadingError": "加载代码编辑器时出错。",
+      "errorStateRecovery": "重试",
+      "editorGroupAriaLabel": "代码编辑器",
+      "statusBarGroupAriaLabel": "状态栏",
+      "errorsTab": "错误",
+      "warningsTab": "警告",
+      "preferencesButtonAriaLabel": "首选项",
+      "paneCloseButtonAriaLabel": "关闭",
+      "preferencesModalHeader": "首选项",
+      "preferencesModalCancel": "取消",
+      "preferencesModalConfirm": "确认",
+      "preferencesModalWrapLines": "自动换行",
+      "preferencesModalTheme": "主题",
+      "preferencesModalLightThemes": "浅色主题",
+      "preferencesModalDarkThemes": "深色主题"
+    },
+    "fromClusterModal": {
+      "title": "从现有集群开始",
+      "description": "选择一个现有集群，在开始前填充向导。只能用创建 AWS ParallelCluster UI 时所用的同一 AWS ParallelCluster 版本<strong>创建</strong>集群。",
+      "actions": {
+        "cancel": "取消",
+        "create": "创建"
+      },
+      "clusterSelect": {
+        "placeholder": "选择集群",
+        "selectedAriaLabel": "已选择",
+        "empty": "没有可用的集群"
+      },
+      "closeAriaLabel": "关闭"
+    }
+  },
+  "clusterLogs": {
+    "title": "集群 {{clusterName}} 的日志",
+    "breadcrumbLabel": "日志",
+    "helpPanel": {
+      "title": "$t(clusterLogs.title)",
+      "description": "<p>查看 Amazon CloudWatch 为集群收集的 AWS ParallelCluster 日志。</p><p>也可以在 Amazon CloudWatch 控制台和控制面板中查看这些日志。</p>",
+      "cwIntegrationLink": {
+        "title": "与 Amazon CloudWatch Logs 集成",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cloudwatch-logs-v3.html"
+      },
+      "cwDashboardLink": {
+        "title": "Amazon CloudWatch 控制面板",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cloudwatch-dashboard-v3.html"
+      },
+      "monitoringLink": {
+        "title": "监控章节",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Monitoring-v3.html"
+      }
+    },
+    "logStreams": {
+      "title": "日志流",
+      "columns": {
+        "hostname": "主机名",
+        "nodeType": "类型",
+        "logIdentifier": "日志标识",
+        "timestamp": "最近事件时间"
+      },
+      "nodeType": {
+        "headNode": "头节点",
+        "computeNode": "计算节点",
+        "empty": "-"
+      },
+      "loadingText": "正在加载日志流...",
+      "filtering": {
+        "countText": "结果：{{filteredItemsCount}}",
+        "filteringPlaceholder": "筛选日志流",
+        "empty": {
+          "title": "没有日志流",
+          "subtitle": "没有可显示的日志流。"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的日志流。",
+          "resetFilter": "清除筛选条件"
+        }
+      },
+      "actions": {
+        "refresh": "刷新"
+      }
+    },
+    "logEvents": {
+      "title": "消息",
+      "columns": {
+        "message": "消息",
+        "timestamp": "事件时间"
+      },
+      "loadingText": "正在加载消息...",
+      "filtering": {
+        "countText": "结果：{{filteredItemsCount}}",
+        "filteringPlaceholder": "查找消息",
+        "empty": {
+          "title": "没有可显示的消息",
+          "subtitle": "选择一个日志流以浏览消息。"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的消息。",
+          "resetFilter": "清除筛选条件"
+        }
+      },
+      "actions": {
+        "refresh": "刷新"
+      }
+    }
+  },
+  "costMonitoring": {
+    "activateButton": {
+      "label": "启用成本监控",
+      "activationSuccess": "成本监控最多需要 24 小时才能生效，我们正在处理您的请求。"
+    },
+    "enableCostExplorerModal": {
+      "title": "启用 Cost Explorer",
+      "description": "要在 PCUI 中使用成本监控，请在账户中打开 Cost Explorer：<p>1. 登录 AWS 管理控制台，进入 AWS Cost Management。<br/>2. 在导航窗格中选择 Cost Explorer。<br/>3. 在欢迎页面选择“启动 Cost Explorer”。</p>",
+      "closeAriaLabel": "关闭",
+      "actions": {
+        "cancel": "以后再说",
+        "goToCostExplorer": "启用 Cost Explorer"
+      }
+    },
+    "costData": {
+      "title": "支出分析",
+      "viewInCostExplorer": "在 Cost Explorer 中查看",
+      "viewBudgets": "查看预算和告警",
+      "chart": {
+        "yTitle": "支出（$）",
+        "xTitle": "月份",
+        "loadingText": "正在加载支出数据...",
+        "errorText": "无法加载支出数据。",
+        "recoveryText": "重试",
+        "empty": {
+          "title": "没有支出数据",
+          "subtitle": "没有可显示的支出数据。数据可能需要 24 小时才能出现。"
+        },
+        "months": {
+          "jan": "1 月",
+          "feb": "2 月",
+          "mar": "3 月",
+          "apr": "4 月",
+          "may": "5 月",
+          "jun": "6 月",
+          "jul": "7 月",
+          "aug": "8 月",
+          "sep": "9 月",
+          "oct": "10 月",
+          "nov": "11 月",
+          "dec": "12 月"
+        }
+      }
+    }
+  },
+  "wizard": {
+    "actions": {
+      "refreshConfig": "刷新",
+      "stopComputeFleet": "停止计算队列",
+      "cancel": "取消",
+      "remove": "移除",
+      "back": "上一步",
+      "next": "下一步",
+      "update": "编辑集群",
+      "create": "创建",
+      "dryRun": "试运行"
+    },
+    "navigation": {
+      "optional": "可选",
+      "stepNumberLabel": "第 {{stepNumber}} 步",
+      "collapsedStepsLabel": "第 {{stepNumber}} 步，共 {{stepsCount}} 步",
+      "steps": "步骤"
+    },
+    "version": {
+      "label": "集群版本",
+      "title": "版本",
+      "placeholder": "集群版本",
+      "description": "选择此集群使用的 AWS ParallelCluster 版本。",
+      "help": {
+        "main": "选择用于创建和管理集群的 AWS ParallelCluster 版本。"
+      },
+      "validation": {
+        "versionSelect": "必须选择一个版本。"
+      }
+    },
+    "cluster": {
+      "title": "集群",
+      "description": "配置适用于所有集群资源的设置。",
+      "clusterProperties": {
+        "title": "集群属性"
+      },
+      "help": {
+        "main": "<p>选择 AWS 区域、操作系统和 VPC 来配置集群环境。</p><p>选择<strong>集群多用户</strong>可使用 Active Directory 管理多个集群用户。</p><p>选择<strong>自定义 Amazon 系统映像（AMI）</strong>可使用自定义的 AWS ParallelCluster 映像。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+        "networkLink": {
+          "title": "网络配置",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/network-configuration-v3.html?icmpid=docs_parallelcluster_hp_cluster_v1"
+        },
+        "adLink": {
+          "title": "集群的多用户访问",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/multi-user-v3.html?icmpid=docs_parallelcluster_hp_cluster_v1"
+        },
+        "amiLink": {
+          "title": "AWS ParallelCluster AMI 自定义",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/custom-ami-v3.html?icmpid=docs_parallelcluster_hp_cluster_v1"
+        }
+      },
+      "validation": {
+        "VpcSelect": "必须选择一个 VPC。",
+        "regionSelect": "必须选择一个区域。",
+        "customAmiSelect": "添加自定义 AMI 时必须选择 AMI ID。"
+      },
+      "clusterName": {
+        "label": "名称",
+        "description": "名称必须以字母开头，最多 60 个字符；如果配置了 Slurm 记账，最多 40 个字符。有效字符：A-Z、a-z、0-9 和 -（连字符）。",
+        "placeholder": "输入集群名称",
+        "cannotBeBlank": "集群名称不能为空。",
+        "alreadyExists": "名为 {{clusterName}} 的集群已存在，请换一个名称。",
+        "doesntMatchRegex": "集群名称“{{clusterName}}”不符合格式要求。名称必须以字母开头，最多 60 个字符；如果配置了 Slurm 记账，最多 40 个字符。有效字符：A-Z、a-z、0-9 和 -（连字符）"
+      },
+      "region": {
+        "label": "区域",
+        "description": "集群所在的 AWS 区域。",
+        "selectedAriaLabel": "已选择",
+        "placeholder": "选择区域"
+      },
+      "os": {
+        "label": "操作系统",
+        "description": "集群节点上安装的操作系统。",
+        "selectedAriaLabel": "已选择"
+      },
+      "vpc": {
+        "label": "VPC",
+        "description": "集群实例所在的 VPC。",
+        "selectedAriaLabel": "已选择"
+      },
+      "imdsSupport": {
+        "label": "IMDS 设置",
+        "description": "集群节点使用的 IMDS 版本。",
+        "placeholder": "选择 IMDS 版本",
+        "values": {
+          "version10": "版本 1.0",
+          "version20": "版本 2.0"
+        }
+      },
+      "multiUser": {
+        "title": "多用户管理属性",
+        "description": "为集群的多用户配置 Active Directory 访问设置。",
+        "help": "<p>通过 LDAP 配置对 Active Directory 的访问。</p><p>使用现有的 Active Directory，或按 <0>$t(wizard.cluster.multiUser.adLink.title)</0> 中介绍的快速创建方法新建一个。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+        "multiUserAccessLink": {
+          "title": "集群的多用户访问",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/multi-user-v3.html?icmpid=docs_parallelcluster_hp_multi_user_v1"
+        },
+        "adLink": {
+          "title": "教程：集成 Active Directory",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/tutorials_05_multi-user-ad.html?icmpid=docs_parallelcluster_hp_multi_user_v1"
+        },
+        "directoryServiceLink": {
+          "title": "Directory Service 配置",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/DirectoryService-v3.html?icmpid=docs_parallelcluster_hp_multi_user_v1"
+        },
+        "checkbox": {
+          "label": "在集群上管理多个用户"
+        },
+        "domainName": {
+          "name": "域名",
+          "description": "用于身份信息的 Active Directory（AD）域。",
+          "help": "域名对应 SSSD-LDAP 参数 ldap_search_base。"
+        },
+        "domainAddress": {
+          "name": "域地址",
+          "description": "指向作为 LDAP 服务器的 Active Directory 域控制器的一个或多个 URI。",
+          "help": "URI 对应 SSSD-LDAP 参数 ldap_uri。可以填写以逗号分隔的多个 URI。使用 LDAP 时，每个 URI 必须以 ldap:// 开头。"
+        },
+        "passwordSecretArn": {
+          "name": "密码密钥的 Amazon 资源名称（ARN）",
+          "description": "保存域只读用户明文密码的 AWS Secrets Manager 密钥的 ARN。",
+          "help": "密钥内容对应 SSSD-LDAP 参数 ldap_default_authtok。"
+        },
+        "domainReadOnlyUser": {
+          "name": "域只读用户",
+          "description": "在集群用户登录认证时，用于向 Active Directory 域查询身份信息的身份。",
+          "help": "域只读用户对应 SSSD-LDAP 参数 ldap_default_bind_dn。请使用您的 Active Directory 身份信息。"
+        },
+        "caCertificate": {
+          "name": "CA 证书",
+          "description": "证书包的绝对路径，其中包含为域控制器签发证书的证书链中每个 CA 的证书。",
+          "help": "CA 证书对应 SSSD-LDAP 参数 ldap_tls_cacert。"
+        },
+        "requireCertificate": {
+          "name": "要求证书",
+          "description": "指定在 TLS 会话中对服务器证书执行的检查。",
+          "help": "要求证书对应 SSSD-LDAP 参数 ldap_tls_reqcert。"
+        },
+        "LDAPAccessFilter": {
+          "name": "LDAP 访问筛选器",
+          "description": "指定筛选器，把 LDAP 查询限制在目录的一部分。",
+          "help": "LDAP 访问筛选器对应 SSSD-LDAP 参数 ldap_access_filter。可用于限制对用户很多的 Active Directory 的查询范围。"
+        },
+        "generateSSHKeys": {
+          "name": "生成 SSH 密钥",
+          "help": "<p>指定集群用户第一次登录头节点后，AWS ParallelCluster 是否为其生成 SSH 密钥对。</p><p>密钥对保存在用户主目录 /home/username/.ssh/ 下。</p><p>用户之后可以用该 SSH 密钥对登录集群头节点和计算节点。</p><p>AWS ParallelCluster 默认禁止直接登录计算节点。如果用户从未登录过头节点，就不会生成 SSH 密钥，用户也无法登录计算节点。</p>"
+        },
+        "advancedOptionsLabel": "高级选项",
+        "sssdParameters": {
+          "name": "其他 SSSD 选项",
+          "description": "要写入集群实例 SSSD 配置文件的任意 SSSD 参数键值对。",
+          "validation": "必须同时填写键和值。",
+          "addButton": "添加",
+          "removeButton": "移除"
+        }
+      }
+    },
+    "headNode": {
+      "title": "头节点",
+      "description": "配置集群头节点。",
+      "instance": {
+        "title": "头节点实例"
+      },
+      "help": {
+        "main": "<p>配置集群的头节点。头节点是集群的管理节点，用于访问和管理集群、管理用户。集群用户登录头节点提交作业。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+        "instanceSelectionLink": {
+          "title": "头节点实例类型的选择",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/best-practices-v3.html?icmpid=docs_parallelcluster_hp_headnode_v1#best-practices-head-node-instance-type"
+        },
+        "headNodePropertiesLink": {
+          "title": "头节点属性",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/HeadNode-v3.html?icmpid=docs_parallelcluster_hp_headnode_v1"
+        },
+        "ssmLink": {
+          "title": "什么是 SSM 会话？",
+          "href": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html#what-is-a-session?icmpid=docs_parallelcluster_hp_headnode_v1"
+        },
+        "dcvLink": {
+          "title": "什么是 NICE DCV 虚拟桌面？",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/dcv-v3.html?icmpid=docs_parallelcluster_hp_headnode_v1"
+        },
+        "customActionsLink": {
+          "title": "什么是自定义操作？",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/custom-bootstrap-actions-v3.html?icmpid=docs_parallelcluster_hp_headnode_v1"
+        },
+        "slurmSettings": "<p>为集群配置 Slurm 记账设置。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+        "accountingLink": {
+          "title": "Slurm 记账在 AWS ParallelCluster 中的工作方式",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/slurm-accounting-v3.html?icmpid=docs_parallelcluster_hp_headnode_accounting_v1"
+        },
+        "databaseLink": {
+          "title": "Slurm 记账数据库设置",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html#Scheduling-v3-SlurmSettings-Database"
+        }
+      },
+      "validation": {
+        "selectSubnet": "必须选择一个子网。",
+        "selectInstanceType": "必须选择一个实例类型。",
+        "setRootVolumeSize": "必须设置根卷大小。",
+        "rootVolumeMinimum": "根卷大小必须是大于或等于 35GB 的整数。",
+        "scriptWithArgs": "指定参数时必须指定脚本路径。"
+      },
+      "Dcv": {
+        "label": "虚拟桌面",
+        "add": "添加 DCV",
+        "help": "使用 DCV 虚拟桌面访问头节点并查看结果。添加此选项时请增大实例规格。"
+      },
+      "Ssm": {
+        "title": "SSM 会话",
+        "label": "添加 SSM 会话",
+        "help": "在集群列表中选择集群并选择 <strong>Shell</strong>，即可打开 SSM 会话访问头节点。所需的 IAM 策略会自动添加到“其他 IAM 策略”设置中。"
+      },
+      "instanceType": {
+        "label": "实例类型"
+      },
+      "keypair": {
+        "label": "密钥对",
+        "description": "选择通过 SSH 连接头节点所用的密钥对。"
+      },
+      "imdsSecured": {
+        "label": "IMDS",
+        "set": "启用 IMDS 安全模式",
+        "help": "IMDS 安全模式只允许具有超级用户权限的用户访问 IMDS（以及实例凭证）。",
+        "imdsv2Link": {
+          "title": "实例元数据服务版本 2 的工作方式",
+          "href": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html#instance-metadata-v2-how-it-works"
+        }
+      },
+      "networking": {
+        "header": "网络",
+        "subnetId": {
+          "label": "子网 ID",
+          "description": "头节点的子网 ID。"
+        }
+      },
+      "security": {
+        "header": "安全配置和权限"
+      },
+      "securityGroups": {
+        "label": "其他安全组",
+        "select": "选择一个或多个安全组"
+      },
+      "localStorage": {
+        "title": "本地存储"
+      },
+      "advancedOptions": {
+        "label": "高级选项",
+        "scripts": {
+          "title": "脚本",
+          "onStart": {
+            "label": "节点启动时运行脚本"
+          },
+          "onConfigured": {
+            "label": "节点配置完成时运行脚本"
+          },
+          "onUpdated": {
+            "label": "节点更新时运行脚本"
+          }
+        },
+        "iamPolicies": {
+          "label": "IAM 策略"
+        }
+      },
+      "slurmSettings": {
+        "validation": {
+          "databaseCannotBeEmpty": "数据库不能为空",
+          "usernameCannotBeEmpty": "用户名不能为空",
+          "passwordCannotBeEmpty": "密码密钥 ARN 不能为空",
+          "scaledownIdleTimeLessThanOne": "缩容空闲时间至少为 1 分钟"
+        },
+        "container": {
+          "title": "Slurm 设置",
+          "description": "连接外部 Slurm 数据库，以监控和分析集群使用情况。"
+        },
+        "database": {
+          "label": "数据库",
+          "description": "Slurm 数据库的地址。",
+          "placeholder": "DNSName/ip:port"
+        },
+        "username": {
+          "label": "用户名",
+          "placeholder": "用户名",
+          "description": "访问数据库的用户 ID。"
+        },
+        "password": {
+          "label": "密码密钥 ARN",
+          "placeholder": "arn::aws::...",
+          "description": "保存数据库密码的 AWS 密钥的 ARN。"
+        },
+        "scaledownIdleTime": {
+          "label": "缩容空闲时间（分钟）",
+          "description": "队列没有作业多长时间后终止 Slurm 节点。",
+          "placeholder": "10"
+        },
+        "queueUpdateStrategy": {
+          "label": "队列更新策略",
+          "description": "指定队列的节点替换策略。",
+          "placeholder": "选择队列更新策略",
+          "selectedAriaLabel": "已选择",
+          "options": {
+            "computeFleetStop": "停止计算队列",
+            "drain": "排空（Drain）",
+            "terminate": "终止"
+          }
+        }
+      }
+    },
+    "storage": {
+      "title": "存储",
+      "description": "为集群添加并配置共享存储。共享存储在头节点和计算节点之间共享。",
+      "container": {
+        "title": "存储设置",
+        "description": "最多可添加 <0>20 个文件系统</0>作为共享存储。",
+        "noStorageSelected": "未选择共享存储。",
+        "storageTypes": "存储类型",
+        "storageTypesPlaceholder": "选择文件系统类型",
+        "volumePlaceholder": "选择卷",
+        "cachePlaceholder": "选择缓存",
+        "addStorage": "添加存储",
+        "removeStorage": "移除存储",
+        "sourceTitle": "存储 {{index}} - {{name}}"
+      },
+      "helpPanel": {
+        "title": "$t(wizard.storage.title)",
+        "description": "<p>为集群添加并配置共享存储。共享存储在头节点和计算节点之间共享。</p><p>选择<strong>添加存储</strong>为集群配置共享存储。</p><p><strong>编辑</strong>共享存储设置时，AWS ParallelCluster 不会在输入时检查内容。如果输入可能导致错误，AWS ParallelCluster 会在创建集群或试运行时返回校验错误。</p><p>要了解哪些设置不能编辑，请在 AWS ParallelCluster 配置文档的<strong>共享存储章节</strong>中搜索 \"Update policy: If this setting is changed, the update is not allowed\"。</p><p>可以配置外部共享存储，或由 AWS ParallelCluster 管理的共享存储。</p>",
+        "section": {
+          "external": {
+            "title": "<strong>外部存储</strong>",
+            "description": "<p>外部存储指由您自己管理的现有卷或文件系统。AWS ParallelCluster 不会创建或删除外部存储。可以让 AWS ParallelCluster 在创建或更新集群时挂载外部存储，在删除或编辑集群时卸载外部存储。建议把外部存储用于集群生命周期之外的长期共享存储。</p>"
+          },
+          "managed": {
+            "title": "<strong>AWS ParallelCluster 托管存储</strong>",
+            "description": "<p>托管存储指由 AWS ParallelCluster 创建、也可能由其删除的卷或文件系统。默认情况下，托管存储跟随集群的生命周期。执行以下任一操作时，AWS ParallelCluster 托管的文件系统或卷及其数据默认会被删除：</p><0></0><p>对于 EBS 存储，可以把<strong>删除策略</strong>从默认的<strong>删除</strong>改为<strong>保留</strong>。这样删除集群后 EBS 卷仍然保留，可以作为外部存储给其他集群使用。其他类型的托管共享存储，<strong>删除策略</strong>都设为<strong>删除</strong>。</p>",
+            "list": {
+              "delete": "<strong>删除</strong>集群",
+              "remove": "<strong>移除</strong>托管共享存储",
+              "edit": "<strong>编辑</strong>配置 YAML 修改托管共享存储的名称。"
+            }
+          },
+          "recommendation": {
+            "description": "<p>建议定期备份数据，以免丢失。</p><p>在<strong>了解更多</strong>中可以查看共享存储的属性、类型和配额。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>"
+          }
+        },
+        "link": {
+          "sharedStorage": {
+            "title": "共享存储",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/shared-storage-quotas-integration-v3.html?icmpid=docs_parallelcluster_hp_shared_storage_v1"
+          },
+          "sharedStorageSection": {
+            "title": "共享存储章节",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html?icmpid=docs_parallelcluster_hp_shared_storage_v1"
+          }
+        }
+      },
+      "Fsx": {
+        "existing": {
+          "fsxLustre": "FSx Lustre 文件系统",
+          "fsxOpenZfs": "FSx OpenZFS 卷",
+          "fsxOnTap": "FSx NetApp ONTAP 卷",
+          "fileCache": "Amazon File Cache"
+        },
+        "capacity": {
+          "label": "存储容量（GB）",
+          "placeholder": "1200"
+        },
+        "lustreType": {
+          "label": "FSx for Lustre",
+          "help": "<p>需要临时存储和短期数据处理时，选择 <code>SCRATCH_1</code> 或 <code>SCRATCH_2</code> 部署类型。</p><p><code>SCRATCH_2</code> 部署类型提供传输中数据加密，突发吞吐能力也高于 <code>SCRATCH_1</code>。</p><p>需要长期存储、长期负载和传输中加密时，选择 <code>PERSISTENT_2</code> 部署类型。</p><p>只有为了向后兼容才选择 <code>PERSISTENT_1</code>。</p>",
+          "link": {
+            "title": "DeploymentType 设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-FsxLustreSettings-DeploymentType"
+          }
+        },
+        "import": {
+          "label": "导入路径",
+          "placeholder": "s3://yourbucket",
+          "help": "设置导入路径，可从 S3 存储桶把文件读入文件系统。详见 <0>ImportPath</0>。"
+        },
+        "export": {
+          "label": "导出路径",
+          "placeholder": "s3://yourbucket",
+          "help": "设置导出路径，可把文件系统中的文件写入 S3 存储桶。详见 <0>ExportPath</0>。"
+        },
+        "throughput": {
+          "label": "每单位存储吞吐量（MB/s/TiB）",
+          "help": "配置每 1 TiB 存储的读写吞吐量，单位 MB/s/TiB。",
+          "link": {
+            "title": "PerUnitStorageThroughput",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-FsxLustreSettings-PerUnitStorageThroughput"
+          }
+        },
+        "compression": {
+          "label": "压缩文件系统数据",
+          "help": "启用数据压缩后，Amazon FSx for Lustre 会在新写入的文件落盘前自动压缩，读取时自动解压。",
+          "link": {
+            "title": "DataCompressionType 设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-FsxLustreSettings-DataCompressionType"
+          }
+        }
+      },
+      "Efs": {
+        "existing": "EFS 文件系统",
+        "encrypted": {
+          "label": "加密",
+          "help": "使用自定义 AWS KMS 密钥加密。",
+          "encryptionLink": {
+            "title": "EFS 加密",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EfsSettings-Encrypted"
+          },
+          "kmsId": "KMS ID"
+        },
+        "performanceMode": {
+          "label": "性能模式："
+        },
+        "provisioned": {
+          "label": "预置吞吐量（1-1024 MiB/s）",
+          "placeholder": "128",
+          "help": "为 Amazon EFS 文件系统配置预置吞吐量（1-1024 MiB/s）。不配置时，文件系统以突发模式创建。",
+          "throughputLink": {
+            "title": "ThroughputMode 章节",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EfsSettings-ThroughputMode"
+          }
+        },
+        "validation": {
+          "provisionedThroughput": "必须填写有效的预置吞吐量。"
+        }
+      },
+      "Ebs": {
+        "existing": {
+          "label": "EBS ID",
+          "placeholder": "例如 vol-1234"
+        },
+        "volumeType": {
+          "label": "卷类型",
+          "placeholder": "默认（{{defaultVolumeType}}）"
+        },
+        "volumeSize": {
+          "label": "卷大小（35-2048 GB）",
+          "placeholder": "35"
+        },
+        "encrypted": {
+          "label": "加密",
+          "help": "使用自定义 AWS KMS 密钥加密。",
+          "encryptionLink": {
+            "title": "EBS 加密",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EbsSettings-Encrypted"
+          },
+          "kmsId": "KMS ID"
+        },
+        "snapshotId": {
+          "label": "快照 ID",
+          "placeholder": "snap-id",
+          "help": "如果用快照作为卷的来源，请填写 Amazon EBS 快照 ID。",
+          "snapshotLink": {
+            "title": "SnapshotID",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EbsSettings-SnapshotId"
+          }
+        },
+        "validation": {
+          "volumeSize": "必须填写有效的卷大小。"
+        }
+      },
+      "instance": {
+        "mountPoint": {
+          "label": "挂载路径",
+          "placeholder": "/shared",
+          "help": "配置共享存储在头节点和计算节点上的挂载路径。"
+        },
+        "sourceName": {
+          "label": "共享存储名称",
+          "placeholder": "StorageName",
+          "maxLengthError": "名称最多 {{maxChars}} 个字符",
+          "forbiddenCharsError": "名称包含不允许的字符",
+          "forbiddenKeywordError": "名称包含不允许的关键字",
+          "emptyError": "名称为必填项"
+        },
+        "useExisting": {
+          "label": "外部文件系统",
+          "empty": "没有选项",
+          "error": "必须填写外部文件系统 ID。",
+          "help": "指定一个外部文件系统，挂载到集群的所有实例上。",
+          "placeholder": "例如 fsx-1234 或 efs-1234",
+          "fsxLink": {
+            "title": "FSx 文件系统 ID",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-FsxLustreSettings-FileSystemId"
+          },
+          "efsLink": {
+            "title": "EFS 文件系统 ID",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EfsSettings-FileSystemId"
+          },
+          "ebsLink": {
+            "title": "EBS 卷 ID",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EbsSettings-VolumeId"
+          }
+        },
+        "deletionPolicy": {
+          "label": "删除策略",
+          "help": "配置删除集群时卷的处理方式：保留、删除或创建快照。",
+          "fsxLink": {
+            "title": "FSx DeletionPolicy",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-FsxLustreSettings-DeletionPolicy"
+          },
+          "efsLink": {
+            "title": "EFS DeletionPolicy",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EfsSettings-DeletionPolicy"
+          },
+          "ebsLink": {
+            "title": "EBS DeletionPolicy",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/SharedStorage-v3.html#yaml-SharedStorage-EbsSettings-DeletionPolicy"
+          }
+        }
+      }
+    },
+    "queues": {
+      "title": "队列",
+      "description": {
+        "default": "最多可配置 {{limit}} 个集群队列。",
+        "newResourcesLimits": "最多可配置 {{limit}} 个队列，每个集群合计最多 {{maxCRPerCluster}} 个计算资源。"
+      },
+      "container": {
+        "title": "队列 {{index}} - {{queueName}}"
+      },
+      "help": {
+        "main": "<p>配置用于作业调度的集群队列。</p><p>可以添加和移除队列及队列中的计算资源。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+        "schedulerLink": {
+          "title": "队列调度器属性",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html?icmpid=docs_parallelcluster_hp_queues_v1"
+        },
+        "customActionsLink": {
+          "title": "自定义操作",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/custom-bootstrap-actions-v3.html?icmpid=docs_parallelcluster_hp_headnode_v1"
+        },
+        "amiLink": {
+          "title": "AWS ParallelCluster AMI 自定义",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/custom-ami-v3.html?icmpid=docs_parallelcluster_hp_cluster_v1"
+        }
+      },
+      "validation": {
+        "emptyName": "队列名称不能为空",
+        "maxLengthName": "名称最多 {{maxChars}} 个字符",
+        "forbiddenCharsName": "名称必须以小写字母开头，只能包含小写字母、数字和连字符",
+        "instanceTypeUnique": "同一队列中的实例类型不能重复。",
+        "instanceTypeMissing": "至少选择一个实例类型。",
+        "selectSubnet": "必须选择一个子网。",
+        "selectSubnets": "至少选择一个子网。",
+        "setRootVolumeSize": "必须设置根卷大小。",
+        "rootVolumeMinimum": "根卷大小必须是大于或等于 35GB 的整数。",
+        "scriptWithArgs": "指定参数时必须指定脚本路径。",
+        "customAmiSelect": "使用自定义 AMI 时必须选择 AMI ID。"
+      },
+      "slurmMemorySettings": {
+        "container": {
+          "title": "Slurm 设置",
+          "help": "<p>使用 Slurm 基于内存的调度，作业可以通过 Slurm 的 <code>--mem</code> 参数指定每个节点所需的内存。</p><p>选择队列更新策略。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。</p>",
+          "memorySchedulingLink": {
+            "title": "Slurm 基于内存的调度在 AWS ParallelCluster 中的工作方式",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/slurm-mem-based-scheduling-v3.html?icmpid=docs_parallelcluster_hp_queues_slurm_memory_v1"
+          },
+          "schedulingPropertiesLink": {
+            "title": "Slurm 基于内存的调度设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html#yaml-Scheduling-SlurmSettings-EnableMemoryBasedScheduling"
+          },
+          "queueUpdateStrategyLink": {
+            "title": "队列更新策略设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html#yaml-Scheduling-SlurmSettings-QueueUpdateStrategy"
+          }
+        },
+        "toggle": {
+          "label": "使用 Slurm 基于内存的调度"
+        },
+        "info": {
+          "header": "只有选择一种实例类型时才能使用 Slurm 基于内存的调度",
+          "body": "任何队列选择了多种实例类型时，默认不能使用 Slurm 基于内存的调度。"
+        }
+      },
+      "allocationStrategy": {
+        "title": "分配策略",
+        "lowestPrice": "价格最低",
+        "capacityOptimized": "容量优化",
+        "helpPanel": {
+          "title": "分配策略",
+          "description": "选择为计算资源分配实例的策略。",
+          "link": {
+            "title": "AllocationStrategy 设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html#yaml-Scheduling-SlurmQueues-AllocationStrategy"
+          }
+        }
+      },
+      "schedulableMemory": {
+        "name": "可调度内存（MiB）",
+        "description": "计算资源的计算节点上可供作业使用的内存量（MiB）",
+        "placeholder": "留空使用默认值",
+        "help": "默认值为 EC2 公布内存的 95%。"
+      },
+      "computeResource": {
+        "header": {
+          "title": "计算资源",
+          "description": "最多可配置 {{limit}} 个计算资源。"
+        },
+        "name": "资源 {{index}} - {{crName}}",
+        "removeComputeResourceButton": {
+          "label": "移除资源"
+        },
+        "addComputeResource": "添加资源",
+        "staticNodes": "静态节点",
+        "dynamicNodes": "动态节点",
+        "instanceType": {
+          "label": "实例类型",
+          "placeholder": {
+            "multiple": "选择一个或多个实例类型"
+          }
+        },
+        "disableHT": {
+          "label": "关闭多线程",
+          "helpPanel": {
+            "title": "$t(wizard.queues.computeResource.disableHT.label)",
+            "description": "禁止在 EC2 实例的同一个核心上运行多个线程。"
+          }
+        },
+        "enableEfa": "使用 EFA",
+        "capacityReservationTarget": {
+          "title": "容量预留",
+          "label": "CapacityReservationTarget",
+          "help": {
+            "title": "容量预留和容量块",
+            "description": "让集群使用容量预留或容量块，以更好地管理资源并保证可用性。",
+            "odcrLink": "使用按需容量预留（ODCR）启动实例",
+            "capacityBlocksLink": "使用容量块启动实例",
+            "note": "选择 CapacityReservationId 后，会自动使用其指定的实例类型。"
+          }
+        },
+        "capacityReservationResourceGroupArn": {
+          "label": "CapacityReservationResourceGroupArn"
+        },
+        "capacityReservationId": {
+          "label": "CapacityReservationId"
+        }
+      },
+      "advancedOptions": {
+        "label": "高级选项",
+        "iamPolicies": {
+          "label": "IAM 策略"
+        },
+        "scripts": {
+          "title": "脚本"
+        },
+        "rootVolume": {
+          "title": "根卷"
+        }
+      },
+      "addQueueButton": {
+        "label": "添加队列"
+      },
+      "removeQueueButton": {
+        "label": "移除队列"
+      },
+      "placementGroup": {
+        "label": "使用置放群组"
+      },
+      "name": {
+        "label": "队列名称",
+        "placeholder": "输入队列名称"
+      },
+      "subnet": {
+        "label": {
+          "single": "子网 ID",
+          "multiple": "子网 ID"
+        },
+        "placeholder": "选择子网"
+      },
+      "purchaseType": {
+        "label": "购买类型",
+        "helpPanel": {
+          "title": "购买类型",
+          "description": "选择计算资源的实例购买类型。",
+          "link": {
+            "title": "CapacityType 设置",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/Scheduling-v3.html#yaml-Scheduling-SlurmQueues-CapacityType"
+          }
+        }
+      },
+      "securityGroups": {
+        "label": "其他安全组"
+      },
+      "exclusive": {
+        "label": "独占（每个节点一个作业）",
+        "description": "每个作业独占整台机器，团队配额按机器计数。用于按机型分配团队配额的队列请保持开启。"
+      },
+      "multiType": {
+        "header": "此队列包含多种实例类型",
+        "content": "按机型的团队配额要求每个队列只有一种实例类型。请把其他实例类型添加为新队列。"
+      }
+    },
+    "create": {
+      "title": "创建",
+      "description": "检查或编辑集群配置，然后创建集群。",
+      "pending": "<strong>{{clusterName}}</strong> 正在创建。可在<strong>集群</strong>中查看 <strong>{{clusterName}}</strong> 的创建状态。",
+      "configuration": {
+        "title": "集群配置 YAML 文件",
+        "description": "检查或编辑用于创建集群的 YAML 文件。",
+        "forceUpdate": "强制更新：在计算队列仍在运行时编辑集群。"
+      },
+      "flashBar": {
+        "success": "成功",
+        "error": "错误",
+        "fleetStop": "需要停止计算队列",
+        "changes": "变更（{{count}}）"
+      },
+      "helpPanel": {
+        "title": "集群配置",
+        "description": "<p>检查、编辑并测试集群配置。</p><p>选择<strong>试运行</strong>只校验配置，不创建集群。</p><p>选择<strong>创建</strong>一步完成配置校验和集群创建。</p>",
+        "link": {
+          "title": "配置属性",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cluster-configuration-file-v3.html?icmpid=docs_parallelcluster_hp_config_create_v1"
+        }
+      }
+    },
+    "update": {
+      "title": "编辑",
+      "pending": "<strong>{{clusterName}}</strong> 正在更新。可在<strong>集群</strong>中查看 <strong>{{clusterName}}</strong> 的更新状态。",
+      "helpPanel": {
+        "title": "集群配置",
+        "description": "<p>检查、编辑并测试集群配置。</p><p>选择<strong>试运行</strong>只校验配置，不修改集群。</p><p>选择<strong>编辑集群</strong>一步完成配置校验和集群修改。</p>",
+        "link": {
+          "title": "配置属性",
+          "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/cluster-configuration-file-v3.html?icmpid=docs_parallelcluster_hp_config_create_v1"
+        }
+      }
+    },
+    "dryRun": {
+      "pending": "<strong>{{clusterName}}</strong> 正在试运行。"
+    },
+    "components": {
+      "instanceSelect": {
+        "placeholder": "选择实例类型",
+        "ariaLabel": "实例类型选择",
+        "noMatches": "没有匹配项",
+        "instanceType": {
+          "vCpus": "{{vCpus}} 个 vCPU",
+          "memory": "{{memory}} GiB 内存"
+        }
+      },
+      "customAmi": {
+        "ariaLabel": "使用自定义 Amazon 系统映像（AMI）",
+        "label": "使用自定义 Amazon 系统映像（AMI）",
+        "helpPanel": {
+          "title": "自定义 Amazon 系统映像（AMI）",
+          "description": "使用自定义 Amazon 系统映像（AMI）定制集群。",
+          "imageLink": {
+            "title": "Image 章节",
+            "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/pcluster.build-image-v3.html"
+          }
+        },
+        "suggestLabel": "自定义 AMI ID"
+      },
+      "rootVolume": {
+        "size": {
+          "label": "根卷大小（GB）",
+          "placeholder": "输入根卷大小。"
+        },
+        "encrypted": "加密根卷",
+        "type": {
+          "label": "卷类型",
+          "placeholder": "默认（{{defaultRootVolumeType}}）"
+        }
+      },
+      "IamPoliciesEditor": {
+        "policyAlreadyAdded": "该策略已添加。",
+        "addButtonLabel": "添加"
+      },
+      "actionsEditor": {
+        "onStart": {
+          "label": "节点启动时运行脚本"
+        },
+        "onConfigured": {
+          "label": "节点配置完成时运行脚本"
+        },
+        "addArgument": "添加参数",
+        "argument": {
+          "label": "参数",
+          "placeholder": "参数"
+        }
+      }
+    }
+  },
+  "users": {
+    "header": {
+      "title": "管理员账号",
+      "description": "在这里添加的账号是管理员（admin 组）。列表显示用户池中所有可以登录 AWS ParallelCluster UI 的账号；团队成员和团队负责人请在“团队管理”中管理。"
+    },
+    "actions": {
+      "add": "添加管理员",
+      "refresh": "刷新",
+      "remove": "移除",
+      "cancel": "取消",
+      "delete": "删除"
+    },
+    "helpPanel": {
+      "title": "管理员账号",
+      "description": "维护可以访问 $t(global.projectName) 的 Cognito 用户列表。<p>输入用户邮箱并选择<strong>添加管理员</strong>。</p><p>选择<strong>移除</strong>可移除用户。</p><p>选择<strong>刷新</strong>可查看用户列表的变化。</p>"
+    },
+    "errors": {
+      "invalidEmail": "请输入有效的邮箱"
+    },
+    "list": {
+      "columns": {
+        "email": "邮箱",
+        "created": "创建时间"
+      },
+      "dialogs": {
+        "delete": {
+          "title": "删除用户",
+          "body": "确定要删除用户 {{userEmail}} 吗？"
+        }
+      },
+      "createModal": {
+        "emailLabel": "邮箱",
+        "emailPlaceholder": "email@domain.com"
+      },
+      "filtering": {
+        "loadingText": "正在加载用户...",
+        "countText": "结果：{{filteredItemsCount}}",
+        "filteringAriaLabel": "查找用户",
+        "filteringPlaceholder": "查找用户",
+        "empty": {
+          "title": "没有用户",
+          "subtitle": "没有可显示的用户。"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的用户。",
+          "action": "清除筛选条件"
+        }
+      }
+    }
+  },
+  "images": {
+    "tabs": {
+      "officialImages": "官方镜像",
+      "customImages": "自定义镜像"
+    }
+  },
+  "customImages": {
+    "header": {
+      "title": "自定义镜像",
+      "description": "您创建的自定义镜像列表。自定义镜像是用于构建<0>自定义 AWS ParallelCluster</0> 的定制 AMI。"
+    },
+    "actions": {
+      "build": "构建镜像",
+      "refresh": "刷新",
+      "statusSelect": {
+        "available": "可用",
+        "pending": "处理中",
+        "failed": "失败",
+        "selectedAriaLabel": "已选择"
+      }
+    },
+    "helpPanel": {
+      "title": "自定义镜像",
+      "description": "选择<strong>构建镜像</strong>创建自定义镜像。<p>只能用创建 $t(global.projectName) 时所用的同一 AWS ParallelCluster 版本构建镜像。</p><p>选择<strong>构建镜像</strong>后，可以上传配置、填写现有镜像的 ID 或手动填写配置来创建自定义镜像。</p><p>提供配置后，选择<strong>构建镜像</strong>。</p><p>选择<strong>刷新</strong>可查看最近更改或新增的 AWS 资源。",
+      "amiCustomizationlink": {
+        "title": "AWS ParallelCluster AMI 自定义",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/custom-ami-v3.html?icmpid=docs_parallelcluster_hp_custom_images_v1"
+      },
+      "buildImagePropertieslink": {
+        "title": "镜像构建配置属性",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/image-builder-configuration-file-v3.html?icmpid=docs_parallelcluster_hp_custom_images_v1"
+      }
+    },
+    "list": {
+      "columns": {
+        "name": "名称",
+        "amiId": "AMI ID",
+        "status": "状态",
+        "region": "区域",
+        "version": "版本"
+      },
+      "filtering": {
+        "loadingText": "正在加载镜像...",
+        "countText": "结果：{{filteredItemsCount}}",
+        "filteringAriaLabel": "查找自定义镜像",
+        "filteringPlaceholder": "查找自定义镜像",
+        "empty": {
+          "title": "没有可显示的镜像",
+          "subtitle": "点击“构建镜像”创建镜像。",
+          "action": "构建镜像"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的镜像。",
+          "action": "清除筛选条件"
+        }
+      }
+    },
+    "splitPanel": {
+      "imageSelectedText": "镜像：{{imageId}}",
+      "noImageSelectedText": "未选择镜像",
+      "selectImageText": "选择一个镜像以查看详细信息"
+    },
+    "imageDetails": {
+      "tabs": {
+        "properties": "属性",
+        "tags": "标签",
+        "configuration": "配置",
+        "stackEvents": "堆栈事件"
+      },
+      "tags": {
+        "key": "键",
+        "value": "值",
+        "filtering": {
+          "loadingText": "正在加载标签...",
+          "countText": "结果：{{filteredItemsCount}}",
+          "filteringAriaLabel": "查找标签",
+          "filteringPlaceholder": "查找标签",
+          "empty": {
+            "title": "没有可显示的标签",
+            "subtitle": "使用镜像配置的 Tags 属性为镜像添加标签。"
+          },
+          "noMatch": {
+            "title": "没有匹配项",
+            "subtitle": "没有符合筛选条件的标签。",
+            "action": "清除筛选条件"
+          }
+        }
+      },
+      "properties": {
+        "header": {
+          "title": "属性"
+        },
+        "creationTime": "创建时间",
+        "architecture": "架构",
+        "state": "状态",
+        "configurationUrl": {
+          "label": "配置 URL",
+          "copyText": "复制",
+          "tooltiptext": "已把镜像配置 URL 复制到剪贴板。"
+        },
+        "buildStatus": "构建状态",
+        "amiId": {
+          "label": "AMI ID",
+          "copyText": "复制",
+          "tooltiptext": "已把 AMI ID 复制到剪贴板。"
+        },
+        "imageId": "镜像 ID",
+        "region": "区域",
+        "version": "版本"
+      },
+      "stackEvents": {
+        "status": "状态 {{status}}",
+        "reason": "原因：{{reason}}"
+      }
+    },
+    "dialogs": {
+      "buildImage": {
+        "versionLabel": "版本",
+        "versionPlaceholder": "选择版本",
+        "closeAriaLabel": "关闭",
+        "title": "镜像配置",
+        "cancel": "取消",
+        "build": "构建镜像",
+        "imageIdLabel": "镜像 ID",
+        "imageIdPlaceholder": "输入镜像 AMI ID",
+        "imageIdError": "镜像 ID 不能为空"
+      }
+    }
+  },
+  "officialImages": {
+    "header": {
+      "title": "官方镜像",
+      "description": "经过测试的官方 Amazon 系统映像（AMI）列表，创建 AWS ParallelCluster 时会自动使用。"
+    },
+    "helpPanel": {
+      "title": "官方镜像",
+      "description": "<p>配置集群时可参考这份 AMI 列表。</p><p>与版本绑定的 $t(global.projectName) 会根据您选择的操作系统和架构，自动使用这些经过测试的 AMI 创建集群。</p>",
+      "link": {
+        "title": "AWS ParallelCluster 支持策略",
+        "href": "https://docs.aws.amazon.com/parallelcluster/latest/ug/support-policy.html"
+      }
+    },
+    "actions": {
+      "versionSelect": {
+        "selectedAriaLabel": "已选版本",
+        "versionText": "版本 {{version}}",
+        "placeholder": "选择版本"
+      },
+      "refresh": "刷新"
+    },
+    "list": {
+      "columns": {
+        "id": "ID",
+        "os": "操作系统",
+        "architecture": "架构",
+        "version": "版本"
+      },
+      "filtering": {
+        "loadingText": "正在加载镜像...",
+        "countText": "结果：{{filteredItemsCount}}",
+        "filteringAriaLabel": "查找官方镜像",
+        "filteringPlaceholder": "查找官方镜像",
+        "empty": {
+          "title": "没有镜像",
+          "subtitle": "没有可显示的镜像。"
+        },
+        "noMatch": {
+          "title": "没有匹配项",
+          "subtitle": "没有符合筛选条件的镜像。",
+          "action": "清除筛选条件"
+        }
+      }
+    }
+  },
+  "components": {
+    "ClusterFailedHelp": {
+      "errorMessage": "堆栈创建失败，请查看 <0>CloudFormation 堆栈事件</0>或<1>集群日志</1>了解原因。"
+    },
+    "Loading": {
+      "text": "正在加载..."
+    },
+    "FileUploadButton": {
+      "label": "选择文件"
+    }
+  },
+  "teamQuota": {
+    "lifecycle": {
+      "title": "正在创建团队 {{team}}",
+      "description": "每个步骤独立执行；重试时会跳过已完成的步骤。",
+      "waiting": "仍有步骤在执行，几秒后再次检查...",
+      "completed": "团队 {{team}} 已就绪。",
+      "failed": "有步骤失败",
+      "connectionLostHeader": "与门户的连接已断开",
+      "connectionLost": "该步骤可能已经完成。选择“重试”检查并继续，已完成的步骤会被跳过。",
+      "retry": "重试",
+      "resume": "继续",
+      "provisioningHeader": "团队 {{team}} 仍在创建中",
+      "provisioningBody": "部分步骤尚未完成。选择“继续”从第一个未完成的步骤接着执行。",
+      "step": "步骤",
+      "status": "状态",
+      "message": "详情",
+      "lead": "团队负责人邮箱（可选）",
+      "leadDescription": "负责人可以查看本团队的配额、作业、成员和费用（PCUI 组 team-<team>）。",
+      "members": "成员",
+      "membersDescription": "PCUI 登录名 = 邮箱；集群用户名 = '@' 前面的部分。最多 10 名成员。",
+      "memberEmail": "成员 {{index}} 邮箱",
+      "clusterUser": "集群用户名：{{user}}",
+      "linkExisting": "沿用 AD 中的现有账号",
+      "addMemberRow": "添加成员",
+      "steps": {
+        "ad": "AD 组和用户",
+        "storage": "EFS 团队目录",
+        "ecr": "环境用的 ECR 仓库",
+        "cognito": "PCUI 组和用户",
+        "slurm": "Slurm 账户、按机型的 QOS 和成员"
+      },
+      "statuses": {
+        "done": "已完成",
+        "pending": "等待中",
+        "in_progress": "进行中",
+        "failed": "失败"
+      }
+    },
+    "member": {
+      "team": {
+        "loadError": "无法加载团队信息",
+        "thisMonth": "本月",
+        "lastMonth": "上月",
+        "last30Days": "最近 30 天",
+        "quota": "团队 {{team}} 的配额",
+        "quotaDescription": "只读。配额由管理员设置。",
+        "usage": "用量与成本",
+        "usageDescription": "{{start}} 至 {{end}}（不含）",
+        "mine": "我（{{user}}）",
+        "wholeTeam": "整个团队",
+        "gpuHours": "GPU 小时",
+        "estimate": "估算费用",
+        "billed": "已分摊账单（Cost Explorer）",
+        "billedUnavailable": "暂无账单数据",
+        "note": "估算 = 机器小时 × 该机型的按需单价；已分摊账单来自 Cost Explorer，通常延迟约 24 小时。",
+        "instanceHours": "机器小时",
+        "pending": "排队中",
+        "borrowed": "借用中"
+      },
+      "loading": "加载中",
+      "refresh": "刷新",
+      "identityError": "无法确认您的身份",
+      "noTeam": "您还不是任何团队的成员，请联系管理员。",
+      "columns": {
+        "jobId": "作业号",
+        "name": "名称",
+        "partition": "队列",
+        "qos": "QOS",
+        "state": "状态",
+        "reason": "排队原因",
+        "gres": "GPU",
+        "elapsed": "已运行",
+        "timeLimit": "最长运行时间",
+        "start": "开始时间",
+        "end": "结束时间",
+        "submit": "提交时间",
+        "exitCode": "退出码",
+        "account": "账户",
+        "tres": "资源",
+        "instanceType": "机型",
+        "alerts": "提醒"
+      },
+      "states": {
+        "PENDING": "排队中",
+        "RUNNING": "运行中",
+        "COMPLETED": "已完成",
+        "FAILED": "失败",
+        "CANCELLED": "已取消",
+        "TIMEOUT": "超时",
+        "CONFIGURING": "节点启动中",
+        "COMPLETING": "收尾中",
+        "NODE_FAIL": "节点故障",
+        "OUT_OF_MEMORY": "内存不足",
+        "PREEMPTED": "被抢占",
+        "SUSPENDED": "已暂停"
+      },
+      "jobs": {
+        "title": "运行中和排队中的作业",
+        "description": "只显示您自己的作业，每 15 秒自动刷新（页面在后台时暂停）。",
+        "empty": "当前没有运行或排队的作业",
+        "loadError": "无法加载作业",
+        "cancel": "取消",
+        "cancelAria": "取消作业 {{jobId}}",
+        "cancelled": "作业 {{jobId}} 已取消",
+        "confirmTitle": "取消作业",
+        "confirmBody": "确定取消作业 {{jobId}}（{{name}}）吗？",
+        "confirmCancel": "确定取消"
+      },
+      "history": {
+        "title": "历史作业",
+        "empty": "该时间段内没有作业",
+        "day": "最近 1 天",
+        "week": "最近 7 天",
+        "month": "最近 31 天"
+      },
+      "detail": {
+        "title": "作业 {{jobId}}",
+        "loadError": "无法加载作业详情",
+        "workdir": "工作目录",
+        "stdout": "标准输出文件",
+        "stderr": "标准错误文件",
+        "latestEnd": "预计最晚结束",
+        "final": "作业已结束。",
+        "autoRefresh": "作业结束前每 15 秒自动刷新。"
+      },
+      "logs": {
+        "stdout": "标准输出 (stdout)",
+        "stderr": "标准错误 (stderr)",
+        "loadEarlier": "加载更早内容",
+        "noPath": "没有日志文件路径",
+        "range": "显示第 {{from}} 字节到文件末尾（共 {{size}} 字节）",
+        "following": "作业运行中：每次刷新都会重新读取文件末尾。"
+      },
+      "files": {
+        "title": "文件",
+        "empty": "目录为空",
+        "up": "上一级",
+        "name": "名称",
+        "size": "大小（字节）",
+        "mtime": "修改时间",
+        "truncated": "只显示前 500 项",
+        "viewer": "文件内容"
+      },
+      "submit": {
+        "submit": "提交",
+        "submitted": "作业 {{jobId}} 已提交",
+        "resources": "资源",
+        "jobName": "作业名称（可选）",
+        "workdir": "工作目录（可选）",
+        "workdirDescription": "默认是团队目录 {{root}}，必须在团队目录或个人主目录下。",
+        "borrowLabel": "借用空闲资源",
+        "borrow": "团队配额已满时借用空闲资源（--qos=borrow）",
+        "borrowDescription": "团队配额已满时，借用其他团队暂时空闲的机器。借用作业优先级较低，最长运行 {{hours}} 小时。",
+        "script": "作业脚本",
+        "modeContent": "粘贴脚本",
+        "modePath": "脚本路径",
+        "scriptPath": "脚本路径",
+        "scriptPathDescription": "集群上的绝对路径，必须在团队目录或个人主目录下。",
+        "scriptContent": "脚本内容",
+        "scriptContentDescription": "脚本会以您的账号保存到团队目录下的 .pcui-jobs/<用户名>/ 中再提交。",
+        "bytes": "{{bytes}} / {{max}} 字节",
+        "runAs": "提交在登录节点上以您的集群账号执行，与命令行 sbatch 的权限完全相同。",
+        "errors": {
+          "range": "请输入 {{min}} 到 {{max}} 之间的整数",
+          "jobName": "只能使用字母、数字、'.'、'_' 或 '-'（最多 64 个字符）",
+          "path": "请输入绝对路径",
+          "scriptEmpty": "脚本不能为空",
+          "scriptTooLarge": "脚本不能超过 {{max}} 字节，请改用脚本路径",
+          "scriptNul": "脚本不能包含 NUL 字符",
+          "instanceType": "请选择机型"
+        },
+        "instanceType": "机型",
+        "noTypes": "您的团队没有可用的机型",
+        "vcpus": "vCPU",
+        "memory": "内存",
+        "limit": "团队上限",
+        "running": "运行中",
+        "remaining": "剩余",
+        "wholeMachineHint": "每个作业独占整台机器。请选择能满足作业需要的最小机型。",
+        "nodes": "机器数量",
+        "nodesDescription": "每台机器都计入该机型的团队上限。",
+        "env": "运行环境",
+        "envNone": "无（直接在节点上运行）",
+        "envTeam": "本团队的环境",
+        "envDescription": "“环境”页面中的容器或 conda 环境，只列出已就绪的环境。",
+        "envError": "无法列出环境：{{message}}",
+        "prefilledJob": "已用作业 {{jobId}} 的参数填好表单。",
+        "gpuModel": "GPU 型号",
+        "gpuMemory": "每块 GPU 显存",
+        "status": "状态",
+        "borrowOnlyTitle": "其他机型（仅可借用）",
+        "borrowOnlyDescription": "本团队没有这些机型的配额。只借用其他团队的空闲配额，最长运行 {{hours}} 小时，可能排队。",
+        "noBorrowTypes": "没有其他机型",
+        "envOthers": "其他团队公开给所有人的环境",
+        "envOfTeam": "团队 {{team}}",
+        "fromTemplate": "从模板填写",
+        "fromTemplateDescription": "用保存的模板填好表单，填好后仍可修改。",
+        "fromTemplatePlaceholder": "选择模板",
+        "selectedSpec": "每台 {{type}}：{{spec}}。作业独占整台机器。",
+        "borrowForced": "本团队没有这个机型的配额，只能以借用方式运行。",
+        "borrowLimit": "借用作业最长运行 {{hours}} 小时，到时会被结束。",
+        "advanced": "高级选项",
+        "maxMinutes": "最长运行时间（分钟，可选）",
+        "maxMinutesDescription": "留空表示不限，作业运行到结束为止。只有希望作业到时被结束时才填写。",
+        "maxMinutesBorrow": "借用作业最长 {{max}} 分钟；留空即按 {{max}} 分钟提交。",
+        "maxMinutesCapped": "超过 {{max}} 分钟，将按 {{max}} 分钟提交。",
+        "maxMinutesPlaceholder": "留空 = 不限",
+        "tabSubmit": "提交作业",
+        "tabTemplates": "我的模板"
+      },
+      "teamLabel": "团队",
+      "resubmit": {
+        "button": "重新提交",
+        "aria": "重新提交作业 {{jobId}}"
+      },
+      "bell": {
+        "title": "通知",
+        "unread": "通知（{{count}}）",
+        "aria": "通知，{{count}} 条未读",
+        "markRead": "全部标为已读",
+        "empty": "没有通知",
+        "new": "新",
+        "message": "内容",
+        "job": "作业 {{jobId}}（{{name}}，{{type}}）：{{state}}",
+        "budget": "团队 {{team}} 预算提醒",
+        "kinds": {
+          "gpu_idle": "GPU 疑似空闲",
+          "long_run": "运行时间提醒",
+          "no_capacity": "暂无容量"
+        },
+        "alerts": {
+          "gpu_idle": "作业 {{jobId}}（{{name}}，{{type}}）已运行 {{hours}} 小时，最近 {{minutes}} 分钟 GPU 几乎没有使用，可能已卡住。不再需要时请在“我的作业”中取消。",
+          "long_run": "作业 {{jobId}}（{{name}}，{{type}}）已运行 {{hours}} 小时。作业会继续运行；不再需要时请在“我的作业”中取消。",
+          "no_capacity": "作业 {{jobId}}（{{name}}，{{type}}）已排队 {{hours}} 小时：该机型暂无容量，系统会自动重试，有容量时自动开始，等待期间不产生费用。"
+        }
+      },
+      "prefs": {
+        "open": "通知设置",
+        "title": "通知设置",
+        "job_notify": "在门户中显示作业结束通知",
+        "email_jobs": "作业结束时给我发邮件",
+        "email_budget": "把团队预算提醒发到我的邮箱",
+        "email": {
+          "none": "邮件通知已关闭（{{address}}）。",
+          "pending": "请在发往 {{address}} 的邮件中确认订阅。",
+          "confirmed": "邮件会发送到 {{address}}。"
+        },
+        "email_alerts": "邮件提醒（GPU 空闲 / 运行时间长 / 暂无容量）",
+        "emailAlertsDescription": "作业疑似空闲、每多运行 24 小时、或长时间等待容量时发给您。默认开启，但要等您在这里第一次修改任一开关（包括门户通知）并确认订阅后才会发出；第一次修改时 AWS 会给您发一封确认邮件。",
+        "confirmHint": "邮件需要先确认：第一次开启任一邮件选项后，AWS 会向 {{address}} 发送一封确认邮件，点击其中的确认链接后才会收到邮件。"
+      },
+      "templates": {
+        "title": "作业模板",
+        "description": "保存的提交表单。选择一个模板即可填好提交表单。",
+        "empty": "还没有模板。可以在提交表单中保存。",
+        "name": "模板名称",
+        "updated": "更新时间",
+        "use": "使用",
+        "rename": "重命名",
+        "deleteAria": "删除模板 {{name}}",
+        "deleteTitle": "删除模板",
+        "deleteBody": "确定删除模板 {{name}} 吗？",
+        "deleted": "模板 {{name}} 已删除。",
+        "saved": "模板 {{name}} 已保存。",
+        "saveAs": "另存为模板",
+        "errors": {
+          "name": "1 到 64 个字符，不能换行。"
+        }
+      },
+      "alerts": {
+        "idle": "疑似空闲",
+        "long_run": "已运行超24小时",
+        "no_capacity": "暂无容量"
+      },
+      "lastUpdated": "最后更新：{{time}}",
+      "unlimited": "不限",
+      "output": {
+        "title": "输出文件",
+        "notStarted": "作业尚未开始运行，节点启动后会生成输出文件（约 5 分钟）。",
+        "neverStarted": "作业没有运行就结束了（例如在排队时被取消），所以没有输出文件。",
+        "envDeleted": "环境 {{id}} 已被删除（由 {{by}} 于 {{at}}），构建日志也随之删除。",
+        "missingTitle": "找不到输出文件",
+        "missing": "作业已运行，但 {{path}} 不存在或无法读取。可能的原因：",
+        "reasonWorkdir": "工作目录对您的账号不可写；",
+        "reasonPath": "输出路径（#SBATCH --output）所在的目录不存在；",
+        "reasonRemoved": "文件已被移动或删除。"
+      }
+    },
+    "header": {
+      "title": "团队管理",
+      "description": "各团队的 Slurm 账户：公平份额、每种机型可同时使用的机器数、预算、成员和当前用量。点击团队名称查看详情。"
+    },
+    "readOnly": "此页面只读。只有管理员可以修改团队配额和成员。",
+    "loadError": "无法加载团队",
+    "loading": "正在加载团队",
+    "empty": {
+      "title": "没有团队",
+      "subtitle": "此集群上没有找到 Slurm 团队账户。"
+    },
+    "cluster": {
+      "label": "集群",
+      "placeholder": "选择集群",
+      "loading": "正在加载集群",
+      "error": "无法加载集群",
+      "empty": "此区域中没有 Slurm 集群"
+    },
+    "columns": {
+      "name": "团队",
+      "fairshare": "公平份额（占比）",
+      "running": "当前运行",
+      "budget": "月度预算",
+      "envCap": "环境存储上限",
+      "members": "成员",
+      "fairshareInfo": "公平份额决定多个团队的作业同时排队时谁先被调度：份额越大，越先调度。括号里是占所有团队份额之和的比例。它不限制团队能用多少机器，机器数由每种机型的配额决定。",
+      "fairshareInfoAria": "什么是公平份额？"
+    },
+    "values": {
+      "noQos": "没有团队 QOS",
+      "unlimited": "不限",
+      "running": "{{machines}} 台机器 / {{gpus}} 块 GPU（{{jobs}} 个作业）",
+      "notAllowed": "不可用",
+      "machines": "{{used}} / {{limit}}",
+      "gb": "{{gb}} GB"
+    },
+    "actions": {
+      "refresh": "刷新",
+      "createTeam": "创建团队",
+      "editLimits": "修改配额",
+      "manageMembers": "管理成员",
+      "delete": "删除",
+      "cancel": "取消",
+      "save": "保存",
+      "create": "创建",
+      "close": "关闭",
+      "remove": "移除",
+      "addMember": "添加"
+    },
+    "fields": {
+      "name": "团队名称",
+      "nameDescription": "小写字母、数字、'_' 和 '-'，以字母开头（最多 32 个字符）。会创建 Slurm 账户、每种可用机型一个 QOS，并允许使用借用 QOS。",
+      "lifecycleNameDescription": "小写字母、数字和 '-'，以字母开头（最多 32 个字符）。会创建 AD 组、/efs/<team>、环境用的团队 ECR 仓库、PCUI 组，以及 Slurm 账户、QOS 和成员。",
+      "fairshare": "公平份额",
+      "fairshareDescription": "多个团队的作业同时排队时，决定谁先被调度（1-10000，默认 50）。它不限制机器数，机器数由“每种机型的机器数”决定。",
+      "typeLimits": "每种机型的机器数",
+      "typeLimitsDescription": "团队每种机型最多可以同时运行多少台机器。团队不能使用的机型留空或填 0。至少允许一种机型。",
+      "typeLimitsEditDescription": "团队每种机型最多可以同时运行多少台机器。填 0 或留空会取消该机型；正在运行的作业不受影响。",
+      "budget": "月度预算（美元，可选）",
+      "budgetDescription": "本月估算费用达到 80% 和 100% 时，成员和负责人会看到提醒横幅。留空表示不设预算。",
+      "envCap": "环境存储上限（GB，可选）",
+      "envCapDescription": "团队运行环境（/efs/envs/<team>）的存储上限。留空表示不限；用到 80% 时会提醒成员。",
+      "advanced": "高级选项",
+      "fairshareShare": "约占所有团队公平份额的 {{percent}}。"
+    },
+    "create": {
+      "title": "创建团队"
+    },
+    "edit": {
+      "title": "修改 {{team}} 的配额"
+    },
+    "members": {
+      "title": "{{team}} 的成员",
+      "user": "用户",
+      "empty": "没有成员",
+      "addLabel": "添加用户",
+      "addDescription": "集群上的 Linux 用户名（小写，最多 20 个字符）。",
+      "removeAria": "移除 {{user}}",
+      "addEmailLabel": "按邮箱添加成员",
+      "addEmailDescription": "会自动创建缺少的 AD 用户和 PCUI 用户；初始密码保存在 Secrets Manager 中。",
+      "stepsHeader": "已添加成员",
+      "steps": {
+        "ad": "AD 用户和组",
+        "cognito": "PCUI 用户和成员组",
+        "slurm": "Slurm 关联",
+        "envs": "环境归属"
+      },
+      "state": "状态"
+    },
+    "delete": {
+      "title": "删除团队",
+      "body": "确定删除团队 {{team}} 吗？这会删除成员的 Slurm 关联、Slurm 账户及其 QOS，以及 PCUI 组 team-{{team}} 和 member-{{team}}。正在运行的作业必须先结束。",
+      "kept": "保留：EFS 团队目录及其数据、ECR 仓库、AD 组和用户、密码密钥以及 PCUI 用户。手动清理方法见 README。",
+      "retainedHeader": "团队 {{team}} 已删除。以下资源已保留：",
+      "retained": {
+        "ad_group": "AD 组",
+        "ad_users": "AD 用户",
+        "team_path": "团队目录",
+        "ecr_repo": "ECR 仓库",
+        "secrets": "密钥",
+        "cognito_users": "PCUI 用户"
+      }
+    },
+    "notifications": {
+      "created": "团队 {{team}} 已创建。",
+      "updated": "团队 {{team}} 的配额已更新。",
+      "deleted": "团队 {{team}} 已删除。",
+      "memberAdded": "用户 {{user}} 已加入 {{team}}。",
+      "memberRemoved": "用户 {{user}} 已从 {{team}} 移除。"
+    },
+    "errors": {
+      "invalidName": "请使用小写字母、数字、'_' 或 '-'，以字母开头（最多 32 个字符）。",
+      "invalidLifecycleName": "请使用小写字母、数字或 '-'，以字母开头（不能有 '_'，最多 32 个字符）。",
+      "invalidEmail": "请输入有效的邮箱地址（'@' 前只能有小写字母、数字、'.'、'_' 或 '-'）。",
+      "invalidEmailUser": "'@' 前面的部分会成为集群用户名：必须以字母开头，最多 20 个字符。",
+      "emailDomain": "不允许使用此邮箱域名。",
+      "duplicateEmail": "两名成员对应同一个集群用户名。",
+      "reservedName": "此名称为系统保留。",
+      "invalidNumber": "请输入整数。",
+      "outOfRange": "请输入 {{min}} 到 {{max}} 之间的值。",
+      "emailMissingAt": "请输入包含 '@' 的完整邮箱地址，例如 zhangsan@example.com。",
+      "noTypeAllowed": "至少允许一种机型（机器数大于 0）。",
+      "invalidAmount": "请输入金额，例如 500 或 99.50。"
+    },
+    "memberEmail": {
+      "hint": "完整邮箱，例如 zhangsan@example.com",
+      "allowedDomains": "（允许的域名：{{domains}}）",
+      "advanced": "高级选项",
+      "linkExistingHint": "仅当 AD 中已有同名旧账号且需要沿用时勾选"
+    },
+    "typeLimits": {
+      "empty": "没有可以设置配额的机型：每个配额需要一个只有一个计算资源、一种 GPU 机型的队列。",
+      "instanceType": "机型",
+      "queue": "队列",
+      "gpus": "GPU 数",
+      "machines": "机器数",
+      "machinesAria": "{{type}} 的机器数",
+      "spec": "规格"
+    },
+    "multiType": {
+      "header": "不能按机型设置配额的队列",
+      "body": "队列 {{queue}} 包含多种机型（{{types}}）；按机型的配额要求每个队列只有一种机型。请把新机型添加为新队列。"
+    },
+    "offboard": {
+      "offboard": "停用",
+      "offboardAria": "停用 {{user}}",
+      "reenable": "重新启用",
+      "reenableAria": "重新启用 {{user}}",
+      "title": "停用 {{user}}",
+      "body": "{{user}} 将无法再登录 PCUI 和集群。团队目录中的数据会保留，该用户的环境转给团队负责人。",
+      "finish": "让正在运行的作业跑完",
+      "finishDescription": "不能再提交新作业；最后一个作业结束后删除 Slurm 关联。",
+      "cancel": "取消正在运行的作业",
+      "cancelDescription": "立即取消该用户在本团队的作业，并删除 Slurm 关联。",
+      "confirm": "停用",
+      "stepsHeader": "已停用 {{user}}",
+      "reenableStepsHeader": "已重新启用 {{user}}",
+      "reenabled": "{{user}} 可以重新登录。",
+      "done": {
+        "offboarded": "{{user}} 已停用。",
+        "finishing": "{{user}} 已停用；正在运行的作业可以跑完。",
+        "active": "{{user}} 已启用。"
+      },
+      "states": {
+        "active": "正常",
+        "finishing": "等待作业结束",
+        "offboarded": "已停用"
+      }
+    },
+    "budget": {
+      "warning": "团队 {{team}} 已用掉月度预算的 80%",
+      "exceeded": "团队 {{team}} 已超出月度预算",
+      "body": "{{month}} 估算费用 {{spent}}，预算 {{budget}}（{{percent}}%）。"
+    },
+    "audit": {
+      "title": "审计日志",
+      "description": "在 PCUI 中做过的所有修改，最新的在前（月份：{{months}}）。最多 500 条。",
+      "loading": "正在加载审计日志",
+      "loadError": "无法加载审计日志",
+      "truncated": "只显示最新的 500 条，请缩小筛选范围。",
+      "apply": "应用筛选",
+      "empty": {
+        "title": "没有记录",
+        "subtitle": "没有符合筛选条件的修改。"
+      },
+      "filters": {
+        "month": "月份",
+        "from": "开始日期",
+        "to": "结束日期",
+        "actor": "操作人",
+        "team": "团队",
+        "action": "操作"
+      },
+      "errors": {
+        "month": "格式为 YYYY-MM。",
+        "from": "格式为 YYYY-MM-DD。",
+        "to": "格式为 YYYY-MM-DD。",
+        "actor": "最多 128 个字符。",
+        "team": "不是有效的团队名称。",
+        "action": "小写字母、数字和 '_'。"
+      },
+      "columns": {
+        "time": "时间（UTC）",
+        "actor": "操作人",
+        "action": "操作",
+        "team": "团队",
+        "cluster": "集群",
+        "result": "结果",
+        "params": "参数",
+        "error": "错误"
+      }
+    },
+    "lead": {
+      "columns": {
+        "user": "用户"
+      },
+      "jobs": {
+        "title": "团队 {{team}} 的作业",
+        "description": "所有成员运行中和排队中的作业（只显示元数据），每 30 秒刷新。",
+        "empty": "没有运行中或排队中的作业",
+        "loadError": "无法加载团队作业"
+      },
+      "quota": {
+        "title": "团队 {{team}} 的配额使用情况",
+        "description": "每种机型的机器数，以及当前占用这些机器的成员。",
+        "holders": "成员",
+        "holder": "{{user}}（运行 {{running}}，排队 {{pending}}）",
+        "loadError": "无法加载团队配额"
+      }
+    },
+    "envs": {
+      "status": {
+        "queued": "排队中",
+        "building": "构建中",
+        "succeeded": "就绪",
+        "failed": "失败",
+        "unknown": "未知"
+      },
+      "kinds": {
+        "container": "容器",
+        "conda": "Conda"
+      },
+      "sources": {
+        "image": "导入镜像",
+        "dockerfile": "Dockerfile",
+        "conda": "Conda / pip"
+      },
+      "fields": {
+        "name": "名称",
+        "nameDescription": "小写字母、数字和 '-'，以字母开头（最多 32 个字符）。",
+        "version": "版本",
+        "versionDescription": "字母、数字、'.'、'_' 和 '-'（最多 32 个字符）。版本不会被覆盖。",
+        "description": "说明（可选）",
+        "software": "软件（可选）",
+        "softwareDescription": "例如：alphafold 2.3、pytorch 2.4",
+        "image": "镜像",
+        "imageDescription": "公共镜像仓库：{{registries}}。团队私有仓库：{{repository}}。",
+        "dockerfile": "Dockerfile",
+        "dockerfileDescription": "由 CodeBuild 构建并推送到团队的 ECR 仓库（最多 {{max}} 字节）。",
+        "environmentYml": "environment.yml",
+        "requirementsTxt": "requirements.txt",
+        "condaSpec": "环境定义",
+        "python": "Python 版本（可选）"
+      },
+      "errors": {
+        "name": "请使用小写字母、数字或 '-'，以字母开头（最多 32 个字符）。",
+        "version": "请使用字母、数字、'.'、'_' 或 '-'，以字母或数字开头（最多 32 个字符）。",
+        "info": "最多 {{max}} 个字符，不能换行。",
+        "image": "请输入不含空格的镜像地址（最多 {{max}} 个字符）。",
+        "empty": "不能为空。",
+        "tooLarge": "不能超过 {{max}} 字节。",
+        "nul": "不能包含 NUL 字符。",
+        "python": "请填写版本号，例如 3.11。"
+      },
+      "create": {
+        "title": "创建环境",
+        "submit": "创建",
+        "open": "创建环境"
+      },
+      "created": "环境 {{id}} 已加入构建队列。",
+      "deleted": "环境 {{id}} 已删除。",
+      "retried": "已重新开始构建 {{id}}。",
+      "actions": {
+        "log": "构建日志",
+        "retry": "重试",
+        "delete": "删除",
+        "deleteAria": "删除 {{id}}",
+        "visibility": "更改可见范围",
+        "visibilityAria": "更改 {{name}} 的可见范围"
+      },
+      "columns": {
+        "name": "名称",
+        "version": "版本",
+        "kind": "类型",
+        "status": "状态",
+        "size": "大小",
+        "description": "说明",
+        "owner": "创建人",
+        "team": "团队",
+        "visibility": "可见范围"
+      },
+      "usage": {
+        "title": "环境存储",
+        "label": "团队 {{team}} 合计",
+        "capped": "已用 {{used}}，上限 {{cap}} GB",
+        "uncapped": "已用 {{used}}（不限）"
+      },
+      "empty": "还没有环境。提交作业前可以先创建环境，准备好 CUDA、AlphaFold 或其他软件。",
+      "truncated": "只显示前面的条目。",
+      "logTitle": "{{id}} 的构建日志",
+      "loadError": "无法加载环境",
+      "confirm": {
+        "deleteTitle": "删除环境",
+        "deleteBody": "确定删除团队 {{team}} 的 {{id}} 吗？使用它的作业将无法启动，构建日志也会一起删除。",
+        "confirm": "确认"
+      },
+      "visibility": {
+        "label": "可见范围",
+        "team": "仅本团队",
+        "all": "所有人",
+        "teamDescription": "只有本团队成员可以使用。",
+        "allDescription": "集群的所有用户都可以使用（只读）。",
+        "warning": "环境内容将对所有用户可读。",
+        "createDescription": "对同名环境的所有版本生效。已存在的环境名保持原来的可见范围。",
+        "changed": "{{name}} 的可见范围已改为：{{visibility}}。",
+        "changeTitle": "更改可见范围",
+        "changeBody": "对 {{name}}（团队 {{team}}）的所有版本生效。改为仅本团队后，其他团队使用它的作业将无法启动。"
+      },
+      "notAllowed": "您不能执行此操作。",
+      "filter": {
+        "team": "团队",
+        "allTeams": "全部团队",
+        "ownTeam": "{{team}}（本团队）",
+        "placeholder": "搜索名称、版本、说明或创建人",
+        "count": "{{count}} 个结果"
+      },
+      "noMatch": "没有符合条件的环境",
+      "listTitle": "环境",
+      "listDescription": "团队 {{team}} 的环境，以及其他团队设为“所有人”的环境（只能使用）。构建以您的身份在构建队列或 CodeBuild 中运行，不会在头节点上运行。"
+    },
+    "capacity": {
+      "title": "机型与节点",
+      "description": "每种机型当前能否开机、各团队的配额和用量，以及集群节点状态（同 sinfo）。每 30 秒刷新。",
+      "loadError": "无法加载机型与节点信息",
+      "loading": "正在加载机型",
+      "empty": "此集群上没有可设置团队配额的机型。",
+      "quotaTitle": "各团队配额和用量",
+      "quotaDescription": "每个团队：运行中 / 团队上限；括号内是排队和借用的机器数。",
+      "teamCell": "{{running}} / {{limit}}",
+      "teamCellExtra": "{{running}} / {{limit}}（排队 {{pending}}，借用 {{borrowed}}）",
+      "nodesTitle": "节点状态",
+      "nodesDescription": "各队列的节点按状态分组，同 sinfo。已关机的节点（~）在有作业时自动启动，约需 5 分钟。",
+      "nodesEmpty": "没有节点状态",
+      "otherQueue": "其他队列",
+      "columns": {
+        "instanceType": "机型",
+        "spec": "规格",
+        "status": "状态",
+        "nodeTotal": "节点数",
+        "queue": "队列",
+        "state": "节点状态",
+        "count": "数量",
+        "nodes": "节点名",
+        "reason": "原因",
+        "limit": "团队上限",
+        "running": "运行中",
+        "remaining": "剩余",
+        "pending": "排队中",
+        "borrowed": "借用中"
+      },
+      "status": {
+        "available": "有空闲",
+        "startable": "需启动约5分钟",
+        "no_capacity": "暂无容量",
+        "busy": "全部在用，需排队"
+      },
+      "nodeState": "{{state}}（{{meaning}}）",
+      "nodeStates": {
+        "idle": "空闲",
+        "alloc": "已分配",
+        "mix": "部分分配",
+        "comp": "收尾中",
+        "down": "不可用",
+        "drain": "已排空",
+        "drng": "排空中",
+        "fail": "故障",
+        "maint": "维护",
+        "resv": "预留"
+      },
+      "nodeFlags": {
+        "poweredOff": "已关机",
+        "poweringUp": "启动中",
+        "poweringDown": "关机中",
+        "notResponding": "无响应"
+      }
+    },
+    "detail": {
+      "title": "团队 {{team}}",
+      "description": "团队的配额、成员、作业、费用和环境。",
+      "tabs": {
+        "overview": "概览",
+        "members": "成员",
+        "jobs": "作业",
+        "cost": "费用",
+        "envs": "环境"
+      },
+      "overviewTitle": "机型与配额",
+      "overviewDescription": "团队每种机型可同时使用的机器数、当前用量，以及现在能否开机。每 30 秒刷新。",
+      "membersTitle": "{{team}} 的成员",
+      "membersDescription": "通过“管理成员”添加、停用或移除成员。",
+      "membersReadOnly": "只有管理员可以修改成员。",
+      "loadError": "无法加载团队",
+      "notFound": "此集群上没有团队 {{team}}。"
+    }
+  },
+  "teamUsage": {
+    "header": {
+      "title": "费用总览",
+      "description": "根据 Slurm 记账统计各团队、机型和成员的机器小时、GPU 小时和估算费用，并按估算费用占比分摊账单费用。"
+    },
+    "period": {
+      "label": "时间段",
+      "thisMonth": "本月",
+      "lastMonth": "上月",
+      "last30Days": "最近 30 天",
+      "custom": "自定义",
+      "start": "开始日期",
+      "end": "结束日期（包含）",
+      "startPlaceholder": "开始 YYYY/MM/DD",
+      "endPlaceholder": "结束 YYYY/MM/DD",
+      "today": "今天",
+      "nextMonth": "下个月",
+      "previousMonth": "上个月"
+    },
+    "loadError": "无法加载团队用量",
+    "loading": "正在加载团队用量",
+    "empty": {
+      "title": "没有用量",
+      "subtitle": "此时间段内没有团队用量记录。"
+    },
+    "table": {
+      "title": "各团队用量和费用",
+      "period": "{{start}} 至 {{end}}（不含结束日）",
+      "prices": "估算使用的按需单价（每机器小时）：{{prices}}"
+    },
+    "columns": {
+      "team": "团队",
+      "gpuHours": "GPU 小时",
+      "share": "费用占比",
+      "billedCompute": "计算",
+      "billedShared": "共享",
+      "billedTotal": "合计",
+      "estimate": "估算费用",
+      "instanceHours": "机器小时",
+      "instanceType": "机型",
+      "instanceTypes": "机型",
+      "user": "成员"
+    },
+    "labels": {
+      "billed": "账单",
+      "estimate": "估算"
+    },
+    "values": {
+      "estimateWithUnpriced": "{{cost}}（另有 {{hours}} 机器小时无单价）",
+      "typeHours": "{{type}} {{hours}} 小时"
+    },
+    "shared": {
+      "title": "集群合计和共享费用",
+      "description": "该时间段内项目的账单合计。共享费用指计算节点以外的所有费用。",
+      "compute": "计算账单",
+      "shared": "共享账单",
+      "total": "账单合计",
+      "unallocated": "未分摊（无用量）",
+      "gpuHours": "GPU 小时",
+      "estimate": "估算费用",
+      "instanceHours": "机器小时"
+    },
+    "trend": {
+      "title": "月度趋势",
+      "description": "最近 6 个月各团队的账单费用或 GPU 小时。",
+      "leadDescription": "最近 6 个月本团队的账单费用或 GPU 小时。",
+      "billedCost": "账单费用",
+      "gpuHours": "GPU 小时",
+      "xTitle": "月份",
+      "yTitleCost": "账单费用（美元）",
+      "yTitleGpuHours": "GPU 小时",
+      "loading": "正在加载趋势",
+      "error": "无法加载趋势",
+      "retry": "重试",
+      "empty": {
+        "title": "没有数据",
+        "subtitle": "没有可显示的数据。"
+      }
+    },
+    "notes": {
+      "title": "说明",
+      "billed-unavailable": "暂时无法从 Cost Explorer 获取账单费用。Slurm 用量和估算仍然显示。",
+      "billed-cost-explorer-not-active": "此账户未启用 Cost Explorer，无法获取账单费用。",
+      "billed-future-period": "所选时间段在未来，还没有账单费用。",
+      "billed-unallocated-no-usage": "此时间段内没有团队使用有单价的机型，账单费用未分摊。",
+      "estimate-prices-unavailable": "无法加载按需单价，机器小时没有计价。",
+      "estimate-has-unpriced-hours": "部分时长运行在包含多种机型的队列上，没有计价。"
+    },
+    "byType": {
+      "title": "按机型的用量",
+      "description": "按团队和机型。"
+    },
+    "byMember": {
+      "title": "按成员的用量",
+      "description": "按团队成员和机型。"
+    },
+    "explain": {
+      "title": "费用说明",
+      "billed": "账单：AWS 账单上的实际金额，来自 Cost Explorer（带集群 Project 标签的资源）。数据大约延迟 24 小时，所以最近一天通常还没有计入。",
+      "estimate": "估算：Slurm 记账中作业的机器小时 × 该机型的按需单价。立即可见，但不是账单金额。",
+      "allocation": "计算费用和共享费用（头节点和登录节点、存储、数据库、目录服务、NAT）按各团队估算费用的占比分摊。",
+      "example": "示例：团队 A 在 g6e.xlarge 上运行了 10 机器小时，按需单价 $1.861/小时，估算 = 10 × 1.861 = $18.61。如果所有团队的估算合计 $50，团队 A 占 37.2%。账单中计算费用 $60、共享费用 $20 时，团队 A 分摊计算 $22.33、共享 $7.44，合计 $29.77。"
+    }
+  }
+}
